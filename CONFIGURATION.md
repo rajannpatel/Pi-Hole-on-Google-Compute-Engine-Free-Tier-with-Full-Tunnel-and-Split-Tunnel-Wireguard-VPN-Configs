@@ -1,6 +1,6 @@
 <img src="./images/numbers/2.svg" width="96" align="left">
 
-# Step 2: Configuration Steps
+# Configuration Steps
 
 <br><br>
 

@@ -1,6 +1,6 @@
 <img src="./images/numbers/1.svg" width="96" align="left">
 
-# Step 1: Provision a Server
+# Provision a Server
 
 <br><br>
 
