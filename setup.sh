@@ -12,7 +12,7 @@ function addClient() {
 		ENDPOINT="$SERVER_PUB_IP:$SERVER_PORT"
 	fi
 
-	WG_CLIENT_COUNT=`expr $(ls -1q wg0-client* 2>/dev/null | wc -l) + 1`
+	WG_CLIENT_COUNT=`expr $(ls -1q wg0-client* 2>/dev/null | wc -l) + 2`
 
     # instructions
 	printf "\n\n\n\n\n\n"
