@@ -20,7 +20,7 @@ chmod +x setup.sh
 
 3. Accept the default values provided throughout the entire installation process, once it is running, the only key you need to press is `ENTER`.
 
-  - The Pi-Hole installation will begin after the Wireguard network interface is configured. You should accept all the default options throughout the Pi-Hole installation, by pressing Enter.
+    - The Pi-Hole installation will begin after the Wireguard network interface is configured. You should accept all the default options throughout the Pi-Hole installation, by pressing Enter.
 
 4. At the end, you will get a QR code you can scan to connect your mobile devices. You could optionally use the provided **.conf** files to import your Wireguard Client Profiles into your devices.
 
