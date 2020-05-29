@@ -1,6 +1,8 @@
-<img src="./images/numbers/1.svg" width="48" align="left">
+<img src="./images/numbers/1.svg" width="96" align="left">
 
 # Step 1: Provision a Server
+
+<br><br>
 
 <img src="./images/logos/cloud.svg" width="48" align="left">
 

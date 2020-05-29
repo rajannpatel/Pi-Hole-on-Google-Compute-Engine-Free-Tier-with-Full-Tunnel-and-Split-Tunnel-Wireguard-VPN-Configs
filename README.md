@@ -27,8 +27,8 @@ The technical merits of major choices in this guide are outlined in [REASONS.md]
 
 This simple 2 step process will get you up and running:
 
-<a href="./GOOGLE-CLOUD.md"><img src="./images/numbers/1.svg" width="28" align="left"> Google Cloud Login, Account Creation, & Server Provisioning</a> <br><br>
-<a href="./CONFIGURATION.md"><img src="./images/numbers/2.svg" width="28" align="left"> Server & Client Configurations</a> <br><br>
+1. [Google Cloud Login, Account Creation, & Server Provisioning](./GOOGLE-CLOUD.md)
+2. [Server & Client Configurations](./CONFIGURATION.md)
 
 # Contributions Welcome
 

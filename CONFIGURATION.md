@@ -1,6 +1,8 @@
-<img src="./images/numbers/2.svg" width="48" align="left">
+<img src="./images/numbers/2.svg" width="96" align="left">
 
 # Step 2: Configuration Steps
+
+<br><br>
 
 1. Connect via SSH to your Server, and become root.
 
