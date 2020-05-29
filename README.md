@@ -36,4 +36,4 @@ If there is something that can be done better, or if this documentation can be i
 
 Contributors should be aware of [REASONS.md](./REASONS.md), which explain the factors behind choices made throughout this guide.
 
-Please review the [Issues](https://github.com/rajannpatel/Pi-Hole-PiVPN-on-Google-Compute-Engine-Free-Tier-with-Full-Tunnel-and-Split-Tunnel-OpenVPN-Configs/issues) if you are in a position to help others, or participate in improving this project.
+Please review the [Issues](https://github.com/rajannpatel/Pi-Hole-on-Google-Compute-Engine-Free-Tier-with-Full-Tunnel-and-Split-Tunnel-Wireguard-VPN-Configs/issues) if you are in a position to help others, or participate in improving this project.
