@@ -5,10 +5,10 @@ function addClient() {
 	source /etc/wireguard/params
 
 	if [[ $SERVER_PUB_IP =~ .*:.* ]]; then
-		echo "IPv6 Detected"
+		echo "A public IPv6 address detected on server - doublecheck at the end to ensure you configure an IPv4 fallback"
 		ENDPOINT="[$SERVER_PUB_IP]:$SERVER_PORT"
 	else
-		echo "IPv4 Detected"
+		# echo "IPv4 Detected"
 		ENDPOINT="$SERVER_PUB_IP:$SERVER_PORT"
 	fi
 
@@ -17,7 +17,8 @@ function addClient() {
     # instructions
 	printf "\n\n\n\n\n\n"
 	echo -e "\e[1mDO NOT CHANGE DEFAULT VALUES"
-	echo -e "\e[0mPress Enter to Accept Defaults for Wireguard Client #$(echo $WG_CLIENT_COUNT)"
+	echo -e "\e[2mCLIENT CONFIGURATION"
+	echo -e "\e[0mPress Enter to Accept Defaults for Wireguard Client #$(expr $WG_CLIENT_COUNT - 1)"
 	printf "\n\n"
 
 	CLIENT_WG_IPV4="10.66.66.$(echo $WG_CLIENT_COUNT)"
@@ -100,7 +101,7 @@ if [[ $1 == "client" ]]; then
 		exit 1
 	fi
 elif [[ -e /etc/wireguard ]]; then
-	echo "WireGuard is already installed. Run 'setup client' to add a client."
+	addClient
 	exit 1
 fi
 
@@ -129,6 +130,7 @@ fi
 # instructions
 printf "\n\n\n\n\n\n"
 echo -e "\e[1mDO NOT CHANGE DEFAULT VALUES"
+echo -e "\e[2mSERVER CONFIGURATION"
 echo -e "\e[0mPress Enter to Accept Defaults"
 printf "\n\n"
 
@@ -257,6 +259,7 @@ if [[ ! $(ls -A wg0-client* 2>/dev/null) ]]; then
 
 	# instructions
 	printf "\n\n\n\n\n\n"
+	echo -e "\e[2mPIHOLE CONFIGURATION"
 	echo -e "\e[0mSet the Admin Password for your Pi-Hole Interface"
 	printf "\n\n"
 
