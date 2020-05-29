@@ -224,3 +224,7 @@ if [[ $OS =~ (fedora|centos) ]] && [[ $WG_RUNNING -ne 0 ]]; then
 fi
 
 addClient
+
+if ! type "pihole" > /dev/null; then
+  curl -sSL https://install.pi-hole.net | bash
+fi
