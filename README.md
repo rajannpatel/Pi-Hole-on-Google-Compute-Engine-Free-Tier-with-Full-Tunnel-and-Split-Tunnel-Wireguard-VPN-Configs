@@ -27,8 +27,8 @@ The technical merits of major choices in this guide are outlined in [REASONS.md]
 
 This simple 2 step process will get you up and running:
 
-1. [GOOGLE-CLOUD.md](./GOOGLE-CLOUD.md): [Google Cloud Login, Account Creation, & Server Provisioning](./GOOGLE-CLOUD.md)
-2. [CONFIGURATION.md](./CONFIGURATION.md): [Server & Client Configurations](./CONFIGURATION.md)
+1. [Google Cloud Login, Account Creation, & Server Provisioning](./GOOGLE-CLOUD.md)
+2. [Server & Client Configurations](./CONFIGURATION.md)
 
 # Contributions Welcome
 
