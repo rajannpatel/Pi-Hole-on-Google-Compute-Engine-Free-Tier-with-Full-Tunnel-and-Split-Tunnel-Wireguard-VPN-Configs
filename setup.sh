@@ -12,10 +12,18 @@ function addClient() {
 		ENDPOINT="$SERVER_PUB_IP:$SERVER_PORT"
 	fi
 
-	CLIENT_WG_IPV4="10.66.66.2"
+	WG_CLIENT_COUNT=`expr $(ls -1q wg0-client* 2>/dev/null | wc -l) + 1`
+
+    # instructions
+	printf "\n\n\n\n\n\n"
+	echo -e "\e[1mDO NOT CHANGE DEFAULT VALUES"
+	echo -e "\e[0mPress Enter to Accept Defaults for Wireguard Client #$(echo $WG_CLIENT_COUNT)"
+	printf "\n\n"
+
+	CLIENT_WG_IPV4="10.66.66.$(echo $WG_CLIENT_COUNT)"
 	read -rp "Client's WireGuard IPv4 " -e -i "$CLIENT_WG_IPV4" CLIENT_WG_IPV4
 
-	CLIENT_WG_IPV6="fd42:42:42::2"
+	CLIENT_WG_IPV6="fd42:42:42::$(echo $WG_CLIENT_COUNT)"
 	read -rp "Client's WireGuard IPv6 " -e -i "$CLIENT_WG_IPV6" CLIENT_WG_IPV6
 
 	# Pi-Hole DNS by default
@@ -60,6 +68,8 @@ AllowedIPs = $CLIENT_WG_IPV4/32,$CLIENT_WG_IPV6/128" >>"/etc/wireguard/$SERVER_W
 	qrencode -t ansiutf8 -l L <"$HOME/$SERVER_WG_NIC-client-$CLIENT_NAME.conf"
 
 	echo "It is also available in $HOME/$SERVER_WG_NIC-client-$CLIENT_NAME.conf"
+    echo "Regenerate this QR Code in the future with this command:"
+    echo "qrencode -t ansiutf8 -l L < $(echo $HOME)/$(echo $SERVER_WG_NIC)-client-$(echo $CLIENT_NAME).conf"
 }
 
 if [ "$EUID" -ne 0 ]; then
@@ -81,7 +91,7 @@ if [ "$(systemd-detect-virt)" == "lxc" ]; then
 	exit
 fi
 
-if [[ $1 == "add-client" ]]; then
+if [[ $1 == "client" ]]; then
 	if [[ -e /etc/wireguard ]]; then
 		addClient
 		exit 0
@@ -90,7 +100,7 @@ if [[ $1 == "add-client" ]]; then
 		exit 1
 	fi
 elif [[ -e /etc/wireguard ]]; then
-	echo "WireGuard is already installed. Run with 'add-client' to add a client."
+	echo "WireGuard is already installed. Run 'setup client' to add a client."
 	exit 1
 fi
 
@@ -110,26 +120,39 @@ else
 	exit 1
 fi
 
+# Install dnsutils to check public IP
+if [[ $OS == 'ubuntu' ]]; then
+	apt-get update
+	apt-get install -y dnsutils
+fi
+
+# instructions
+printf "\n\n\n\n\n\n"
+echo -e "\e[1mDO NOT CHANGE DEFAULT VALUES"
+echo -e "\e[0mPress Enter to Accept Defaults"
+printf "\n\n"
+
 # Detect public IPv4 address and pre-fill for the user
+# dig requires dnsutils to be installed, only the ubuntu condition has this dependency explicitly installed
 SERVER_PUB_IPV4=$(dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}')
-read -rp "[do not change, press Enter to accept value] IPv4 public address: " -e -i "$SERVER_PUB_IPV4" SERVER_PUB_IP
+read -rp "IPv4 public address: " -e -i "$SERVER_PUB_IPV4" SERVER_PUB_IP
 
 # Detect public interface and pre-fill for the user
 SERVER_PUB_NIC="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
-read -rp "[do not change, press Enter to accept value] Public interface: " -e -i "$SERVER_PUB_NIC" SERVER_PUB_NIC
+read -rp "Public interface: " -e -i "$SERVER_PUB_NIC" SERVER_PUB_NIC
 
 SERVER_WG_NIC="wg0"
-read -rp "[do not change, press Enter to accept value] WireGuard interface name: " -e -i "$SERVER_WG_NIC" SERVER_WG_NIC
+read -rp "WireGuard interface name: " -e -i "$SERVER_WG_NIC" SERVER_WG_NIC
 
 SERVER_WG_IPV4="10.66.66.1"
-read -rp "[do not change, press Enter to accept value] Server's WireGuard IPv4: " -e -i "$SERVER_WG_IPV4" SERVER_WG_IPV4
+read -rp "Server's WireGuard IPv4: " -e -i "$SERVER_WG_IPV4" SERVER_WG_IPV4
 
 SERVER_WG_IPV6="fd42:42:42::1"
-read -rp "[do not change, press Enter to accept value] Server's WireGuard IPv6: " -e -i "$SERVER_WG_IPV6" SERVER_WG_IPV6
+read -rp "Server's WireGuard IPv6: " -e -i "$SERVER_WG_IPV6" SERVER_WG_IPV6
 
 # Generate random number within private ports range
 SERVER_PORT="51515"
-read -rp "[do not change, press Enter to accept value] Server's WireGuard port: " -e -i "$SERVER_PORT" SERVER_PORT
+read -rp "Server's WireGuard port: " -e -i "$SERVER_PORT" SERVER_PORT
 
 # Install WireGuard tools and module
 if [[ $OS == 'ubuntu' ]]; then
@@ -137,7 +160,7 @@ if [[ $OS == 'ubuntu' ]]; then
 	add-apt-repository -y ppa:wireguard/wireguard
 	apt-get update
 	apt-get install -y "linux-headers-$(uname -r)"
-	apt-get install -y wireguard iptables resolvconf qrencode
+    apt-get install -y wireguard iptables resolvconf qrencode
 elif [[ $OS == 'debian' ]]; then
 	echo "deb http://deb.debian.org/debian/ unstable main" >/etc/apt/sources.list.d/unstable.list
 	printf 'Package: *\nPin: release a=unstable\nPin-Priority: 90\n' >/etc/apt/preferences.d/limit-unstable
@@ -223,8 +246,21 @@ if [[ $OS =~ (fedora|centos) ]] && [[ $WG_RUNNING -ne 0 ]]; then
 	fi
 fi
 
-addClient
-
+# install pihole if it has not been installed
 if ! type "pihole" > /dev/null; then
-  curl -sSL https://install.pi-hole.net | bash
+	curl -sSL https://install.pi-hole.net | bash
 fi
+
+# use client configurations to determine if this is the first run, and apply preferred initial configurations
+if [[ ! $(ls -A wg0-client* 2>/dev/null) ]]; then
+	pihole -a -i local
+
+	# instructions
+	printf "\n\n\n\n\n\n"
+	echo -e "\e[0mSet the Admin Password for your Pi-Hole Interface"
+	printf "\n\n"
+
+	pihole -a -p
+fi
+
+addClient
