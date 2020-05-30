@@ -18,7 +18,7 @@ Both Full Tunnel (all traffic) and Split Tunnel (DNS traffic only) VPN connectio
 
 # Quickstart
 
-1. Install Ubuntu 20.04 Minimal LTS if you want to benefit from the Wireguard Module natively shipped in the Linux Kernel. Or install any other OS flavor compatible with Pi-Hole.
+1. Install [Ubuntu 20.04](https://ubuntu.com/download/server) if you want to benefit from the Wireguard Module natively shipped in the Linux Kernel. Or install any other OS flavor compatible with Pi-Hole.
 2. Download and execute **setup.sh** from this repository.
 3. Make sure your router or firewall is forwarding incoming UDP packets on Port 51515 to the Ubuntu 20.04 Minimal LTS Server, that you ran the **setup.sh** script on.
 
