@@ -73,7 +73,7 @@ The technical merits of major choices in this guide are outlined in [REASONS.md]
 
 ## Option B <br> Set up a Pi-Hole Ad Blocking VPN Server behind your router at home.
 
-- **STEP 1** A new install of Ubuntu 20.04 (or other OS which is compatible with Pi-Hole)
+- **STEP 1** A new install of Ubuntu 20.04 (or other OS which is compatible with Pi-Hole), and have your Router forward all incoming UDP connections on Port 51515 to this device.
 - **STEP 2** [Software Installation & Configuration](./CONFIGURATION.md)
 - **STEP 3** Bridge your Local LAN with your Wireguard network:
   - Open the Wireguard Application on your Client Device, and edit the VPN Profile.
