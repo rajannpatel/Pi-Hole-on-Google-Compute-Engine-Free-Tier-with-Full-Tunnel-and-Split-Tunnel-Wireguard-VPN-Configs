@@ -51,7 +51,7 @@ chmod +x setup.sh
 
 <img src="./images/upfront-cost.svg" width="90" align="right">
 
-You can run your own privacy-first ad blocking service within the **[Free Usage Tier](https://cloud.google.com/free/)** on Google Cloud. **This guide gets you set up with a Google Cloud account, and walks you through setting up a full tunnel or split tunnel VPN connection on your Android & iOS devices, and computers.**
+You can run your own privacy-first ad blocking service within the **[Free Usage Tier](https://cloud.google.com/free/)** on Google Cloud. **Step 1 of this guide gets you set up with a Google Cloud account, and Step 2 walks you through setting up a full tunnel or split tunnel VPN connection on your Android & iOS devices, and computers.**
 
 This simple 2 step process will get you up and running:
 

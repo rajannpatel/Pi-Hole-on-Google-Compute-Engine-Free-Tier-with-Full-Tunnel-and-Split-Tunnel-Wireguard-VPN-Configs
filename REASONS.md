@@ -65,7 +65,7 @@ Google's Public DNS has the lowest latency to your Pi-Hole, because it resolves 
 
 Ubuntu 20.04 LTS Minimal on GCE has the Wireguard Kernel enabled.
 
-1. Verify the wireguard module is loaded:
+You can verify the wireguard module is loaded:
 
 ```
 lsmod | grep wireguard
