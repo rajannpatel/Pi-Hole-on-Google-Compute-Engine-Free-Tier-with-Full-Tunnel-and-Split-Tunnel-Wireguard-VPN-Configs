@@ -32,4 +32,4 @@ chmod +x setup.sh
 
 It will automatically increment the IP Addresses for each new client profile, continue accepting all the default values the script provides. The option to edit values is provided for advanced users with edge case requirements.
 
-6. Once your device is connected to Wireguard, all your DNS requests will flow through Pi-Hole. Your device will be identified by its IPv6 address in Pi-Hole's admin interface, which will be accessible at `http://10.66.66.1/admin`
+6. Once your device is connected to Wireguard, all your DNS requests will flow through Pi-Hole. Your device will be identified by its IPv6 address in Pi-Hole's admin interface, which will be accessible at `http://10.66.66.1/admin`. The default configuration (which is the recommended configuration) for all VPN profiles is Split Tunnel. If you wish to have a Full Tunnel, edit the **Allowed IPs** on your Client Profile to read `0.0.0.0/0,::/0`.
