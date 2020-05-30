@@ -1,4 +1,23 @@
-# Server Provisioning with Google Cloud
+### STEPS
+
+<table>
+    <tbody>
+        <tr>
+            <td><b><a href="#google-cloud-login-and-account-creation">Step 1</a></b></td>
+            <td>Google Cloud Login and Account Creation</td>
+        </tr>
+        <tr>
+            <td><b><a href="#compute-engine-virtual-machine-setup">Step 2</a></b></td>
+            <td>Compute Engine Virtual Machine Setup</td>
+        </tr>
+        <tr>
+            <td><b><a href="#cloud-console-mobile-app">Step 2</a></b></td>
+            <td>Cloud Console Mobile App</td>
+        </tr>
+    </tbody>
+</table>
+
+---
 
 <img src="./images/logos/cloud.svg" width="48" align="left">
 
@@ -17,6 +36,8 @@ Go to https://cloud.google.com and click **Console** at the top right if you hav
 5. Enable billing for this Project if you haven't already: <br><img src="./images/screenshots/6.png" width="288">
 - Compute Engine will begin initializing: <br><img src="./images/screenshots/7.png" width="232">
 
+---
+
 <img src="./images/logos/computeengine.svg" width="48" align="left">
 
 # Compute Engine Virtual Machine Setup
@@ -30,6 +51,7 @@ Go to https://cloud.google.com and click **Console** at the top right if you hav
 6. You can log into your Virtual Machine via SSH in a Browser by clicking the SSH button. Make note of your External IP (it will be different from the screenshot below).<br><img src="./images/screenshots/15.png" width="369">
 7. Click the Hamburger Menu at the top left, click **VPC Network** and click **Firewall Rules**. <br><img src="./images/screenshots/firewall.png" width="222"> <br>Click **Create Firewall Rule** at the top center of the page. The name of your rule should be `allow-wireguard`, change the **Targets** dropdown to **All instances in the network**. The **Source IP Ranges** should be `0.0.0.0/0`. The **udp** checkbox should be selected, and the port number next to it should be changed from `all` to `51515`. Then click the **Create** button. You can disable the `default-allow-rdp` rule which Google set up with a default action of Allow, but because our server does not run any service on Port 3389 it is harmless to leave this rule alone. Do not disable the **default-allow-ssh** firewall rule, or you will disable the browser-based SSH from within the Google Cloud Console.
 
+---
 
 <img src="./images/logos/cloudconsole.svg" width="48" align="left">
 
@@ -42,4 +64,4 @@ Go to https://cloud.google.com and click **Console** at the top right if you hav
 
 Install the "Cloud Console" app on your Android or iOS device.
 
-Manage and monitor Google Cloud Platform services from your Android or iOS device.
+Now you can manage and monitor Google Cloud Platform services from your Android or iOS device.
