@@ -28,6 +28,8 @@ chmod +x setup.sh
 ./setup.sh 
 ```
 
+4. Create another VPN Client Profile by running `./setup.sh` again, you can create 253 profiles without modifying the script.
+
 ---
 
 # Detailed Guides
