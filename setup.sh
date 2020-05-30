@@ -34,11 +34,6 @@ function addClient() {
 	CLIENT_DNS_2="fd42:42:42::1"
 	read -rp "Second DNS resolver to use for the client: " -e -i "$CLIENT_DNS_2" CLIENT_DNS_2
 
-	CLIENT_NAME=$(
-		head /dev/urandom | tr -dc A-Za-z0-9 | head -c 10
-		echo ''
-	)
-
 	# Generate key pair for the client
 	CLIENT_PRIV_KEY=$(wg genkey)
 	CLIENT_PUB_KEY=$(echo "$CLIENT_PRIV_KEY" | wg pubkey)
@@ -54,7 +49,7 @@ DNS = $CLIENT_DNS_1,$CLIENT_DNS_2
 PublicKey = $SERVER_PUB_KEY
 PresharedKey = $CLIENT_PRE_SHARED_KEY
 Endpoint = $ENDPOINT
-AllowedIPs = 10.66.66.1, fd42:42:42::1/128" >>"$HOME/$SERVER_WG_NIC-client-$CLIENT_NAME.conf"
+AllowedIPs = 10.66.66.1, fd42:42:42::1/128" >>"$HOME/$SERVER_WG_NIC-client-$WG_CLIENT_COUNT.conf"
 
 	# Add the client as a peer to the server
 	echo -e "\n[Peer]
@@ -66,11 +61,11 @@ AllowedIPs = $CLIENT_WG_IPV4/32,$CLIENT_WG_IPV6/128" >>"/etc/wireguard/$SERVER_W
 
 	echo -e "\nHere is your client config file as a QR Code:"
 
-	qrencode -t ansiutf8 -l L <"$HOME/$SERVER_WG_NIC-client-$CLIENT_NAME.conf"
+	qrencode -t ansiutf8 -l L <"$HOME/$SERVER_WG_NIC-client-$WG_CLIENT_COUNT.conf"
 
-	echo "It is also available in $HOME/$SERVER_WG_NIC-client-$CLIENT_NAME.conf"
+	echo "It is also available in $HOME/$SERVER_WG_NIC-client-$WG_CLIENT_COUNT.conf"
     echo "Regenerate this QR Code in the future with this command:"
-    echo "qrencode -t ansiutf8 -l L < $(echo $HOME)/$(echo $SERVER_WG_NIC)-client-$(echo $CLIENT_NAME).conf"
+    echo "qrencode -t ansiutf8 -l L < $(echo $HOME)/$(echo $SERVER_WG_NIC)-client-$(echo $WG_CLIENT_COUNT).conf"
 }
 
 if [ "$EUID" -ne 0 ]; then
