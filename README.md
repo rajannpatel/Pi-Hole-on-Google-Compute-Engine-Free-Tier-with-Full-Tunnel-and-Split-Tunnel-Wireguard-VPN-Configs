@@ -28,6 +28,7 @@ chmod +x setup.sh
 ```
 
 This will:
+
     - install the latest Wireguard packages
     - install the latest Pi-Hole, and configure it to accept DNS requests from the Wireguard interface
     - Display a QR Code for 1 Split Tunnel VPN Profile
