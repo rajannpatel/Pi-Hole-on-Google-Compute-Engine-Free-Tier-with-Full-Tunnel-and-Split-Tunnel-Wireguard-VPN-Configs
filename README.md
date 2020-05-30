@@ -14,8 +14,6 @@ Both Full Tunnel (all traffic) and Split Tunnel (DNS traffic only) VPN connectio
 | full | +10% overhead for vpn | low | 100% encryption | yes
 | split | just kilobytes per day | very low | dns encryption only | yes
 
-The technical merits of major choices in this guide are outlined in [REASONS.md](./REASONS.md).
-
 ---
 
 # Quickstart
@@ -29,12 +27,11 @@ chmod +x setup.sh
 ./setup.sh 
 ```
 
+---
+
+# Detailed Guides
+
 <table>
-    <thead>
-        <tr>
-            <th rowspan=2>Detailed Guides</th>
-        </tr>
-    </thead>
     <tbody>
         <tr>
             <td><b>Option A</b></td>
@@ -47,6 +44,8 @@ chmod +x setup.sh
     </tbody>
 </table>
 
+---
+
 ## Option A: Set up a Pi-Hole Ad Blocking VPN Server with a static Anycast IP on Google Cloud's Always Free Usage Tier
 
 <img src="./images/upfront-cost.svg" width="90" align="right">
@@ -58,9 +57,15 @@ This simple 2 step process will get you up and running:
 - **STEP 1** [Google Cloud Login, Account Creation, & Server Provisioning](./GOOGLE-CLOUD.md)
 - **STEP 2** [Server & Client Configurations](./CONFIGURATION.md)
 
+The technical merits of major choices in this guide are outlined in [REASONS.md](./REASONS.md).
+
+---
+
 ## Option B: Set up a Pi-Hole Ad Blocking VPN Server behind your router at home.
 
 Detailed writeup including an explanation of how to bridge your Local LAN with your Wireguard network coming soon, refer to the Quickstart above for now.
+
+---
 
 # Contributions Welcome
 
