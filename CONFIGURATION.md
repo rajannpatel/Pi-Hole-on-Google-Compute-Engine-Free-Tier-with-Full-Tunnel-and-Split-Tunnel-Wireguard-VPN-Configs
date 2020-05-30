@@ -1,6 +1,4 @@
-<img src="./images/numbers/2.svg" width="96" align="left">
-
-# Configuration Steps
+# Software Installation & Configuration
 
 <br><br>
 

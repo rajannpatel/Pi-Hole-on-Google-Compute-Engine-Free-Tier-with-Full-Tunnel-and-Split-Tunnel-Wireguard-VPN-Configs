@@ -65,7 +65,7 @@ You can run your own privacy-first ad blocking service within the **[Free Usage 
 This simple 2 step process will get you up and running:
 
 - **STEP 1** [Google Cloud Login, Account Creation, & Server Provisioning](./GOOGLE-CLOUD.md)
-- **STEP 2** [Server & Client Configurations](./CONFIGURATION.md)
+- **STEP 2** [Software Installation & Configuration](./CONFIGURATION.md)
 
 The technical merits of major choices in this guide are outlined in [REASONS.md](./REASONS.md).
 
