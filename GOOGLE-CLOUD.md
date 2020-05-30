@@ -1,4 +1,4 @@
-Server Provisioning with Google Cloud
+# Server Provisioning with Google Cloud
 
 <img src="./images/logos/cloud.svg" width="48" align="left">
 
