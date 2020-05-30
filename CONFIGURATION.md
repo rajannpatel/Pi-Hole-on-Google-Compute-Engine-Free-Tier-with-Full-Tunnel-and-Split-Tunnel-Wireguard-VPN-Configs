@@ -1,6 +1,6 @@
 # Software Installation & Configuration
 
-<br><br>
+This guide assumes a fresh installation of a Pi-Hole compatible Linux Operating System, such as Ubuntu 20.04.
 
 1. Connect via SSH to your Server, and become root.
 

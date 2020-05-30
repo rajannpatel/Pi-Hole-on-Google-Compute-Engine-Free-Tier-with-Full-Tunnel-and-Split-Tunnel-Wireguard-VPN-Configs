@@ -73,7 +73,8 @@ The technical merits of major choices in this guide are outlined in [REASONS.md]
 
 ## Option B <br> Set up a Pi-Hole Ad Blocking VPN Server behind your router at home.
 
-Detailed writeup including an explanation of how to bridge your Local LAN with your Wireguard network coming soon, refer to the Quickstart above for now.
+- **STEP 1** [Software Installation & Configuration](./CONFIGURATION.md)
+- **STEP 2** TODO: Detailed writeup including an explanation of how to bridge your Local LAN with your Wireguard network coming soon.
 
 ---
 
