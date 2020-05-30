@@ -46,7 +46,7 @@ chmod +x setup.sh
 
 ---
 
-## Option A: Set up a Pi-Hole Ad Blocking VPN Server with a static Anycast IP on Google Cloud's Always Free Usage Tier
+## Option A <br> Set up a Pi-Hole Ad Blocking VPN Server with a static Anycast IP on Google Cloud's Always Free Usage Tier
 
 <img src="./images/upfront-cost.svg" width="90" align="right">
 
@@ -61,7 +61,7 @@ The technical merits of major choices in this guide are outlined in [REASONS.md]
 
 ---
 
-## Option B: Set up a Pi-Hole Ad Blocking VPN Server behind your router at home.
+## Option B <br> Set up a Pi-Hole Ad Blocking VPN Server behind your router at home.
 
 Detailed writeup including an explanation of how to bridge your Local LAN with your Wireguard network coming soon, refer to the Quickstart above for now.
 
