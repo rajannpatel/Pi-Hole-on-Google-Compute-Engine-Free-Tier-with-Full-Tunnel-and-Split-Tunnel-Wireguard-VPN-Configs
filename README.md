@@ -35,11 +35,11 @@ chmod +x setup.sh
 <table>
     <tbody>
         <tr>
-            <td><b>[Option A](#option-a--set-up-a-pi-hole-ad-blocking-vpn-server-with-a-static-anycast-ip-on-google-clouds-always-free-usage-tier)</b></td>
+            <td><b><a href="#option-a--set-up-a-pi-hole-ad-blocking-vpn-server-with-a-static-anycast-ip-on-google-clouds-always-free-usage-tier">Option A</a></b></td>
             <td>Set up a Pi-Hole Ad Blocking VPN Server with a static Anycast IP on Google Cloud's Always Free Usage Tier</td>
         </tr>
         <tr>
-            <td><b>[Option B](#option-b--set-up-a-pi-hole-ad-blocking-vpn-server-behind-your-router-at-home)</b></td>
+            <td><b><a href="#option-b--set-up-a-pi-hole-ad-blocking-vpn-server-behind-your-router-at-home">Option B</a></b></td>
             <td>Set up a Pi-Hole Ad Blocking VPN Server behind your router at home.</td>
         </tr>
     </tbody>
