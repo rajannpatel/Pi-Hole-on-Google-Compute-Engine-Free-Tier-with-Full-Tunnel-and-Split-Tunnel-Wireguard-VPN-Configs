@@ -77,7 +77,7 @@ The technical merits of major choices in this guide are outlined in [REASONS.md]
 - **STEP 2** [Software Installation & Configuration](./CONFIGURATION.md)
 - **STEP 3** Bridge your Local LAN with your Wireguard network:
   - Open the Wireguard Application on your Client Device, and edit the VPN Profile.
-  - Change the **Allowed IPs** to include your LAN subnet. For example, if your router's IP address is `192.168.86.1`, your subnet is `192.168.86.0/24`. If you add `192.168.86.0/24` to the comma separated list of **Allowed IPs**, you will be able to ping any device on your LAN over your Wireguard connection.
+  - Change the **Allowed IPs** to include your LAN subnet. For example, if your router's IP address is `192.168.86.1`, and your Ubuntu 20.04 Wireguard server has an IP somewhere in the range of `192.168.86.2` to `192.168.86.255`, your subnet is `192.168.86.0/24`. If you add `192.168.86.0/24` to the comma separated list of **Allowed IPs** in the Client Configuration file, you will be able to ping any device with an IP address between `192.168.86.1` to `192.168.86.255` over your Wireguard connection.
 
 ---
 
