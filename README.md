@@ -77,9 +77,23 @@ The technical merits of major choices in this guide are outlined in [REASONS.md]
 - **STEP 2** [Software Installation & Configuration](./CONFIGURATION.md)
 - **STEP 3** Bridge your Local LAN with your Wireguard network:
   - Open the Wireguard Application on your Client Device, and edit the VPN Profile.
-  - Change the **Allowed IPs** to include your LAN subnet. For example, if your router's IP address is `192.168.86.1`, and your Ubuntu 20.04 Wireguard server has an IP somewhere in the range of `192.168.86.2` to `192.168.86.255`, your subnet is `192.168.86.0/24`. If you add `192.168.86.0/24` to the comma separated list of **Allowed IPs** in the Client Configuration file, you will be able to ping any device with an IP address between `192.168.86.1` to `192.168.86.255` over your Wireguard connection.
+  - Change the **Allowed IPs** to include your LAN subnet. For example, if your router's IP address is `192.168.86.1`, and your Ubuntu 20.04 Wireguard server has an IP somewhere in the range of `192.168.86.2` to `192.168.86.255`, your subnet is `192.168.86.0/24`. If you add `192.168.86.0/24` to the comma separated list of **Allowed IPs** in the Client Configuration file, you will be able to ping any device with an IP address between `192.168.86.1` to `192.168.86.254` over your Wireguard connection.
 
 ---
+
+# Subnet Cheatsheet
+
+If you wish to enable communication between select Wireguard clients, using the same CIDR notation under **Allowed IPs** in each Client Configuration file is necessary. This table could help you plan which devices get what IPs.
+
+| CIDR Notation | Address Range |
+| -- | -- |
+| 10.66.66.0/30 | 10.66.66.1 - 10.66.66.2 |
+| 10.66.66.0/29 | 10.66.66.1 - 10.66.66.6 |
+| 10.66.66.0/28 | 10.66.66.1 - 10.66.66.14 |
+| 10.66.66.0/27 | 10.66.66.1 - 10.66.66.30 |
+| 10.66.66.0/26 | 10.66.66.1 - 10.66.66.62 |
+| 10.66.66.0/25 | 10.66.66.1 - 10.66.66.126 |
+| 10.66.66.0/24 | 10.66.66.1 - 10.66.66.254 |
 
 # Contributions Welcome
 
