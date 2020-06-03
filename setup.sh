@@ -65,7 +65,7 @@ AllowedIPs = $CLIENT_WG_IPV4/32,$CLIENT_WG_IPV6/128" >>"/etc/wireguard/$SERVER_W
 
 	echo "It is also available in $HOME/$SERVER_WG_NIC-client-$WG_CLIENT_COUNT.conf"
     echo "Regenerate this QR Code in the future with this command:"
-    echo "qrencode -t ansiutf8 -l L < $(echo $HOME)/$(echo $SERVER_WG_NIC)-client-$(echo $WG_CLIENT_COUNT).conf"
+    echo "sudo cat $(echo $HOME)/$(echo $SERVER_WG_NIC)-client-$(echo $WG_CLIENT_COUNT).conf | qrencode -t ansiutf8 -l L"
 }
 
 if [ "$EUID" -ne 0 ]; then
