@@ -2,7 +2,7 @@
 
 This guide assumes a fresh installation of a Pi-Hole compatible Linux Operating System, such as Ubuntu 20.04.
 
-1. Connect via SSH to your Server, and become root. After running this command, step 2 must be performed as the root user, in the root home directory: **/root**
+1. Connect via SSH to your Server, and become the root user (in the root home directory at **/root**) by executing this command:
 
 ```bash
 sudo su -
@@ -22,7 +22,7 @@ chmod +x setup.sh
 
 4. At the end, you will get a QR code you can scan to connect your mobile devices. You could optionally use the provided **.conf** files to import your Wireguard Client Profiles into your devices.
 
-5. To add additional Wireguard VPN Clients, run **setup.sh** again. You must run this script as the root user, from within the **/root** home directory.
+5. To add additional Wireguard VPN Clients, run **setup.sh** again. You must run this script as the root user, from within the **/root** home directory. This can be accomplished by making sure you have performed *Step 1* before performing this step.
 
 ```bash
 ./setup.sh
