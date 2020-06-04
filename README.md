@@ -69,6 +69,7 @@ You can run your own privacy-first ad blocking service within the **[Free Usage 
 This simple 2 step process will get you up and running:
 
 - **STEP 1** [Google Cloud Login, Account Creation, & Server Provisioning](./GOOGLE-CLOUD.md)
+
 - **STEP 2** [Software Installation & Configuration](./CONFIGURATION.md)
 
 The technical merits of major choices in this guide are outlined in [REASONS.md](./REASONS.md).
@@ -78,9 +79,13 @@ The technical merits of major choices in this guide are outlined in [REASONS.md]
 ## Option B <br> Set up a Pi-Hole Ad Blocking VPN Server behind your router at home.
 
 - **STEP 1** A new install of Ubuntu 20.04 (or other OS which is compatible with Pi-Hole), and have your Router forward all incoming UDP connections on Port 51515 to this device.
+
 - **STEP 2** [Software Installation & Configuration](./CONFIGURATION.md)
+
 - **STEP 3** Bridge your Local LAN with your Wireguard network:
+
   - Open the Wireguard Application on your Client Device, and edit the VPN Profile.
+
   - Change the **Allowed IPs** to include your LAN subnet. For example, if your router's IP address is `192.168.86.1`, and your Ubuntu 20.04 Wireguard server has an IP somewhere in the range of `192.168.86.2` to `192.168.86.255`, your subnet is `192.168.86.0/24`. If you add `192.168.86.0/24` to the comma separated list of **Allowed IPs** in the Client Configuration file, you will be able to ping any device with an IP address between `192.168.86.1` to `192.168.86.254` over your Wireguard connection.
 
 ---
