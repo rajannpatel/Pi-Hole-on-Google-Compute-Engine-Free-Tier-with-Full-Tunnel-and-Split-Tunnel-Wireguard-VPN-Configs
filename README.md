@@ -34,12 +34,12 @@ This will:
   - install the latest Pi-Hole, and configure it to accept DNS requests from the Wireguard interface
   - Display a QR Code for 1 Split Tunnel VPN Profile, so you can import the VPN Profile to your device without having to type anything
 
-3. Make sure your router or firewall is forwarding incoming UDP packets on Port 51515 to the Ubuntu 20.04 Minimal LTS Server, that you ran the **setup.sh** script on.
+3. Make sure your router or firewall is forwarding incoming UDP packets on Port 51515 to the Ubuntu 20.04 Server, that you ran the **setup.sh** script on.
 4. Create another VPN Client Profile by running `./setup.sh` again, you can create 253 profiles without modifying the script.
-5. Now that the setup is over, you can look into [Connecting to Wireguard VPN](./CONNECTING-TO-WG-VPN.md)
+5. [Enable Wireguard VPN Connections on your devices](./CONNECTING-TO-WG-VPN.md)
 ---
 
-# Detailed Guides
+# Detailed Server Setup Guide
 
 <table>
     <tbody>
@@ -67,7 +67,6 @@ This simple 2 step process will get you up and running:
 - **STEP 1** [Google Cloud Login, Account Creation, & Server Provisioning](./GOOGLE-CLOUD.md)
 - **STEP 2** [Software Installation & Configuration](./CONFIGURATION.md)
 
-To connect and use the VPN, take a look at [Connecting to Wireguard VPN](./CONNECTING-TO-WG-VPN.md)
 The technical merits of major choices in this guide are outlined in [REASONS.md](./REASONS.md).
 
 ---
@@ -79,6 +78,12 @@ The technical merits of major choices in this guide are outlined in [REASONS.md]
 - **STEP 3** Bridge your Local LAN with your Wireguard network:
   - Open the Wireguard Application on your Client Device, and edit the VPN Profile.
   - Change the **Allowed IPs** to include your LAN subnet. For example, if your router's IP address is `192.168.86.1`, and your Ubuntu 20.04 Wireguard server has an IP somewhere in the range of `192.168.86.2` to `192.168.86.255`, your subnet is `192.168.86.0/24`. If you add `192.168.86.0/24` to the comma separated list of **Allowed IPs** in the Client Configuration file, you will be able to ping any device with an IP address between `192.168.86.1` to `192.168.86.254` over your Wireguard connection.
+
+---
+
+# Client Setup Guides
+
+To connect and use the VPN, you will need to install the Wireguard VPN software on your device or computer: Review some [common Wireguard VPN Client configuration steps](./CONNECTING-TO-WG-VPN.md)
 
 ---
 
