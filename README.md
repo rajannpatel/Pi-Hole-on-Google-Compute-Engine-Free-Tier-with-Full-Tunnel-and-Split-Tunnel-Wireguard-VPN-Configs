@@ -39,7 +39,7 @@ This will:
 5. [Enable Wireguard VPN Connections on your devices](./CONNECTING-TO-WG-VPN.md)
 ---
 
-# Detailed Server Setup Guide
+# Server Setup Guide
 
 <table>
     <tbody>
@@ -81,7 +81,7 @@ The technical merits of major choices in this guide are outlined in [REASONS.md]
 
 ---
 
-# Client Setup Guides
+# Client Setup Guide
 
 To connect and use the VPN, you will need to install the Wireguard VPN software on your device or computer: Review some [common Wireguard VPN Client configuration steps](./CONNECTING-TO-WG-VPN.md)
 

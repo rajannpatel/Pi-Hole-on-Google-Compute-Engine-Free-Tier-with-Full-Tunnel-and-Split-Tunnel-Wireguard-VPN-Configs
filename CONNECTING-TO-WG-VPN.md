@@ -1,6 +1,6 @@
 # Common Wireguard VPN Client Configuration Steps
 
-At the end of the Quickstart or Detailed Server Setup Guide, a Wireguard configuration file named **wg0-client-1.conf** should have been created. This allows a client to connect to the VPN. A visual representation of the **wg0-client-1.conf** configuration file also appears as a QR Code, and the VPN Profile can be scanned using the Android or iOS Wireguard apps.
+At the end of the Quickstart or Server Setup Guide, a Wireguard configuration file named **wg0-client-1.conf** should have been created. This allows a client to connect to the VPN. A visual representation of the **wg0-client-1.conf** configuration file also appears as a QR Code, and the VPN Profile can be scanned using the Android or iOS Wireguard apps.
 
 If you are setting up a Wireguard Client on a computer or server, obtain the contents of the **wg0-client-1.conf** file and copy it to the device you want to connect from.
 
