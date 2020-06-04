@@ -20,15 +20,13 @@ Both Full Tunnel (all traffic) and Split Tunnel (DNS traffic only) VPN connectio
 
 1.  Install [Ubuntu 20.04](https://ubuntu.com/download/server) if you want to benefit from the Wireguard Module natively shipped in the Linux Kernel. Or install any other OS flavor compatible with Pi-Hole.
 
-2.  Download and execute **setup.sh** from this repository.
+2.  Download and execute **setup.sh** from this repository to:
 
-    This will:
+    i.  install the latest Wireguard packages
 
-    -  install the latest Wireguard packages
+    ii.  install the latest Pi-Hole, and configure it to accept DNS requests from the Wireguard interface
 
-    -  install the latest Pi-Hole, and configure it to accept DNS requests from the Wireguard interface
-
-    -  Display a QR Code for 1 Split Tunnel VPN Profile, so you can import the VPN Profile to your device without having to type anything
+    iii.  display a QR Code for 1 Split Tunnel VPN Profile, so you can import the VPN Profile to your device without having to type anything
 
 ```bash
 sudo su -
