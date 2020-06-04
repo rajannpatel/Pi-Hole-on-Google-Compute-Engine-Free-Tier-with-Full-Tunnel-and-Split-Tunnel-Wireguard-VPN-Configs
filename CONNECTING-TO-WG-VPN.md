@@ -10,7 +10,7 @@ You can print the contents of the **wg0-client-1.conf** file in the command line
 sudo cat /root/wg0-client-1.conf
 ```
 
-The output can be copy and pasted into a blank text file on your client device, and this configuration file should be saved on your client device with a **.conf** suffix.
+The output can be copy and pasted into a blank text file on your client device, and this configuration file should be saved on your client device as **wg0-client-1.conf**
 
 ---
 
