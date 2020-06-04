@@ -22,11 +22,11 @@ Both Full Tunnel (all traffic) and Split Tunnel (DNS traffic only) VPN connectio
 
 2.  Download and execute **setup.sh** from this repository to:
 
-    i.  install the latest Wireguard packages
+    1.  install the latest Wireguard packages
 
-    ii.  install the latest Pi-Hole, and configure it to accept DNS requests from the Wireguard interface
+    2.  install the latest Pi-Hole, and configure it to accept DNS requests from the Wireguard interface
 
-    iii.  display a QR Code for 1 Split Tunnel VPN Profile, so you can import the VPN Profile to your device without having to type anything
+    3.  display a QR Code for 1 Split Tunnel VPN Profile, so you can import the VPN Profile to your device without having to type anything
 
 ```bash
 sudo su -
