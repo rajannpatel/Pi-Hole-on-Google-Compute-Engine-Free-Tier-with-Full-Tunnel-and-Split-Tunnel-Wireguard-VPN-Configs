@@ -42,8 +42,8 @@ function addClient() {
 	# Create client file and add the server as a peer
 	echo "[Interface]
 PrivateKey = $CLIENT_PRIV_KEY
-Address = $CLIENT_WG_IPV4/24,$CLIENT_WG_IPV6/64
-DNS = $CLIENT_DNS_1,$CLIENT_DNS_2
+Address = $CLIENT_WG_IPV4/24, $CLIENT_WG_IPV6/64
+DNS = $CLIENT_DNS_1, $CLIENT_DNS_2
 
 [Peer]
 PublicKey = $SERVER_PUB_KEY
@@ -55,7 +55,7 @@ AllowedIPs = 10.66.66.1, fd42:42:42::1/128" >>"$HOME/$SERVER_WG_NIC-client-$WG_C
 	echo -e "\n[Peer]
 PublicKey = $CLIENT_PUB_KEY
 PresharedKey = $CLIENT_PRE_SHARED_KEY
-AllowedIPs = $CLIENT_WG_IPV4/32,$CLIENT_WG_IPV6/128" >>"/etc/wireguard/$SERVER_WG_NIC.conf"
+AllowedIPs = $CLIENT_WG_IPV4/32, $CLIENT_WG_IPV6/128" >>"/etc/wireguard/$SERVER_WG_NIC.conf"
 
 	systemctl restart "wg-quick@$SERVER_WG_NIC"
 
