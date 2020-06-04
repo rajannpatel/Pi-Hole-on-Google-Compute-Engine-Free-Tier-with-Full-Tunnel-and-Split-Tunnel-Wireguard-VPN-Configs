@@ -36,7 +36,7 @@ This will:
 
 3. Make sure your router or firewall is forwarding incoming UDP packets on Port 51515 to the Ubuntu 20.04 Minimal LTS Server, that you ran the **setup.sh** script on.
 4. Create another VPN Client Profile by running `./setup.sh` again, you can create 253 profiles without modifying the script.
-
+5. Now that the setup is over, you can look into [Connecting to Wireguard VPN](./CONNECTING-TO-WG-VPN.md)
 ---
 
 # Detailed Guides
@@ -67,6 +67,7 @@ This simple 2 step process will get you up and running:
 - **STEP 1** [Google Cloud Login, Account Creation, & Server Provisioning](./GOOGLE-CLOUD.md)
 - **STEP 2** [Software Installation & Configuration](./CONFIGURATION.md)
 
+To connect and use the VPN, take a look at [Connecting to Wireguard VPN](./CONNECTING-TO-WG-VPN.md)
 The technical merits of major choices in this guide are outlined in [REASONS.md](./REASONS.md).
 
 ---
