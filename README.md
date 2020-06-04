@@ -18,8 +18,8 @@ Both Full Tunnel (all traffic) and Split Tunnel (DNS traffic only) VPN connectio
 
 # Quickstart
 
-1. Install [Ubuntu 20.04](https://ubuntu.com/download/server) if you want to benefit from the Wireguard Module natively shipped in the Linux Kernel. Or install any other OS flavor compatible with Pi-Hole.
-2. Download and execute **setup.sh** from this repository.
+1.  Install [Ubuntu 20.04](https://ubuntu.com/download/server) if you want to benefit from the Wireguard Module natively shipped in the Linux Kernel. Or install any other OS flavor compatible with Pi-Hole.
+2.  Download and execute **setup.sh** from this repository.
 
 ```bash
 sudo su -
@@ -28,15 +28,16 @@ chmod +x setup.sh
 ./setup.sh 
 ```
 
-This will:
+    This will:
 
-  - install the latest Wireguard packages
-  - install the latest Pi-Hole, and configure it to accept DNS requests from the Wireguard interface
-  - Display a QR Code for 1 Split Tunnel VPN Profile, so you can import the VPN Profile to your device without having to type anything
+    -  install the latest Wireguard packages
+    -  install the latest Pi-Hole, and configure it to accept DNS requests from the Wireguard interface
+    -  Display a QR Code for 1 Split Tunnel VPN Profile, so you can import the VPN Profile to your device without having to type anything
 
-3. Make sure your router or firewall is forwarding incoming UDP packets on Port 51515 to the Ubuntu 20.04 Server, that you ran the **setup.sh** script on.
-4. Create another VPN Client Profile by running `./setup.sh` again, you can create 253 profiles without modifying the script.
-5. [Enable Wireguard VPN Connections on your devices](./CONNECTING-TO-WG-VPN.md)
+3.  Make sure your router or firewall is forwarding incoming UDP packets on Port 51515 to the Ubuntu 20.04 Server, that you ran the **setup.sh** script on.
+4.  Create another VPN Client Profile by running `./setup.sh` again, you can create 253 profiles without modifying the script.
+5.  [Enable Wireguard VPN Connections on your devices](./CONNECTING-TO-WG-VPN.md)
+
 ---
 
 # Server Setup Guide
