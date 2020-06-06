@@ -1,6 +1,6 @@
 # Software Installation & Configuration
 
-This guide assumes you have completed a fresh installation of a Pi-Hole compatible Linux Operating System, such as Ubuntu 20.04.
+These instructions assume you have completed a fresh installation of a Pi-Hole compatible Linux Operating System, such as Ubuntu 20.04. Do not skip steps:
 
 1. Connect via SSH to your Server, and become the root user (in the root home directory at **/root**) by executing this command:
 
