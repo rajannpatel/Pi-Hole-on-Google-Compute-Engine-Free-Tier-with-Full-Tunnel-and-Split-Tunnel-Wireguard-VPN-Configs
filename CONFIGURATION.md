@@ -30,4 +30,24 @@ chmod +x setup.sh
 
 It will automatically increment the IP Addresses for each new client profile, continue accepting all the default values the script provides. The option to edit values is provided for advanced users with edge case requirements.
 
-6. Once your device is connected to Wireguard, all your DNS requests will flow through Pi-Hole. Your device will be identified by its IPv6 address in Pi-Hole's admin interface, which will be accessible at `http://10.66.66.1/admin`. The default configuration (which is the recommended configuration) for all VPN profiles is Split Tunnel. If you wish to have a Full Tunnel, edit the **Allowed IPs** on your Client Profile to read `0.0.0.0/0, ::/0`.
+6. [Configure the Wireguard VPN Client on your device](./CONNECTING-TO-WG-VPN.md). Once your device is connected via Wireguard, all your DNS requests will flow through Pi-Hole. Your device will be identified by its IPv6 address in Pi-Hole's admin interface, which will be accessible at `http://10.66.66.1/admin`. The default configuration (which is the recommended configuration) for all VPN profiles is Split Tunnel. If you wish to route all your traffic through the VPN (Full Tunnel), edit the **Allowed IPs** on your Client Profile on your device to read `0.0.0.0/0, ::/0`.
+
+---
+
+## Edge Case Requirements
+
+If you wish to enable communication between select Wireguard clients, using the same CIDR notation under **Allowed IPs** in each Client Configuration file is necessary. This table could help you plan which devices get what IPs.
+
+**TODO:** provide a subnet cheatsheet for IPv6 addresses
+
+### Subnet Cheatsheet
+
+| CIDR Notation | Address Range |
+| -- | -- |
+| 10.66.66.0/30 | 10.66.66.1 - 10.66.66.2 |
+| 10.66.66.0/29 | 10.66.66.1 - 10.66.66.6 |
+| 10.66.66.0/28 | 10.66.66.1 - 10.66.66.14 |
+| 10.66.66.0/27 | 10.66.66.1 - 10.66.66.30 |
+| 10.66.66.0/26 | 10.66.66.1 - 10.66.66.62 |
+| 10.66.66.0/25 | 10.66.66.1 - 10.66.66.126 |
+| 10.66.66.0/24 | 10.66.66.1 - 10.66.66.254 |

@@ -1,4 +1,4 @@
-# Full tunnel or split tunnel IPv6 + IPv4 Wireguard VPN connections to an ad blocking Pi-Hole server, from your Android, iOS, Linux, macOS, & Windows devices
+# Full Tunnel or Split Tunnel IPv6 + IPv4 Wireguard VPN connections to an ad blocking Pi-Hole server, from your Android, iOS, Linux, macOS, & Windows devices
 
 <img src="./images/data-privacy-risk.svg" width="125" align="right">
 
@@ -16,7 +16,7 @@ Both Full Tunnel (all traffic) and Split Tunnel (DNS traffic only) VPN connectio
 
 ---
 
-# Quickstart
+## Quickstart
 
 1.  Install [Ubuntu 20.04](https://ubuntu.com/download/server) if you want to benefit from the Wireguard Module natively shipped in the Linux Kernel. Or install any other OS flavor compatible with Pi-Hole.
 
@@ -43,7 +43,7 @@ chmod +x setup.sh
 
 ---
 
-# Server Setup Guide
+## Server Setup Guide
 
 <table>
     <tbody>
@@ -60,7 +60,7 @@ chmod +x setup.sh
 
 ---
 
-## Option A <br> Set up a Pi-Hole Ad Blocking VPN Server with a static Anycast IP on Google Cloud's Always Free Usage Tier
+### OPTION A <br> Set up a Pi-Hole Ad Blocking VPN Server with a static Anycast IP on Google Cloud's Always Free Usage Tier
 
 <img src="./images/upfront-cost.svg" width="90" align="right">
 
@@ -76,7 +76,7 @@ The technical merits of major choices in this guide are outlined in [REASONS.md]
 
 ---
 
-## Option B <br> Set up a Pi-Hole Ad Blocking VPN Server behind your router at home.
+### OPTION B <br> Set up a Pi-Hole Ad Blocking VPN Server behind your router at home.
 
 - **STEP 1** A new install of Ubuntu 20.04 (or other OS which is compatible with Pi-Hole), and have your Router forward all incoming UDP connections on Port 51515 to this device.
 
@@ -90,27 +90,11 @@ The technical merits of major choices in this guide are outlined in [REASONS.md]
 
 ---
 
-# Client Setup Guide
+## Client Setup Guide
 
 To connect and use the VPN, you will need to install the Wireguard VPN software on your device or computer: Review some [common Wireguard VPN Client configuration steps](./CONNECTING-TO-WG-VPN.md)
 
----
-
-# Subnet Cheatsheet
-
-If you wish to enable communication between select Wireguard clients, using the same CIDR notation under **Allowed IPs** in each Client Configuration file is necessary. This table could help you plan which devices get what IPs.
-
-| CIDR Notation | Address Range |
-| -- | -- |
-| 10.66.66.0/30 | 10.66.66.1 - 10.66.66.2 |
-| 10.66.66.0/29 | 10.66.66.1 - 10.66.66.6 |
-| 10.66.66.0/28 | 10.66.66.1 - 10.66.66.14 |
-| 10.66.66.0/27 | 10.66.66.1 - 10.66.66.30 |
-| 10.66.66.0/26 | 10.66.66.1 - 10.66.66.62 |
-| 10.66.66.0/25 | 10.66.66.1 - 10.66.66.126 |
-| 10.66.66.0/24 | 10.66.66.1 - 10.66.66.254 |
-
-# Contributions Welcome
+## Contributions Welcome
 
 If there is something that can be done better, or if this documentation can be improved in any way, please submit a Pull Request with your fixes or edits.
 
