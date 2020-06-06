@@ -11,7 +11,7 @@
             <td>Compute Engine Virtual Machine Setup</td>
         </tr>
         <tr>
-            <td><b><a href="#cloud-console-mobile-app">Step 2</a></b></td>
+            <td><b><a href="#cloud-console-mobile-app">Step 3</a></b></td>
             <td>Cloud Console Mobile App</td>
         </tr>
     </tbody>
