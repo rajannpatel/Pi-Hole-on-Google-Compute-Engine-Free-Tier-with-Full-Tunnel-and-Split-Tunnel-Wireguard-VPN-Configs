@@ -63,7 +63,17 @@ Google's Public DNS has the lowest latency to your Pi-Hole, because it resolves 
 
 #### Wireguard Module
 
-Ubuntu 20.04 LTS Minimal on GCE has the Wireguard Module available in its Kernel.
+In a blog post announcing [Ubuntu 20.04's arrival](https://ubuntu.com/blog/ubuntu-20-04-lts-arrives) Canonical stated:
+
+>  WireGuard is included in Ubuntu 20.04 LTS
+
+This has been met with confusion because Ubuntu 20.04 ships with Linux Kernel 5.4, and Wireguard is officially in Linux Kernel 5.6. Canonical backported the Wireguard kernel module into 5.4 for Ubuntu 20.04
+
+The proof is in the pudding:
+
+```bash
+modprobe wireguard # executes successfully
+```
 
 You can verify the wireguard module is loaded:
 
