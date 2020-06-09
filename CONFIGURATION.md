@@ -1,6 +1,14 @@
 # Software Installation & Configuration
 
-These instructions assume you have completed a fresh installation of a Pi-Hole compatible Linux Operating System such as [Ubuntu 20.04 in the cloud](./GOOGLE-CLOUD.md), or locally in your home/office. *Do not skip steps:*
+These instructions assume
+
+- you have completed a fresh installation of a Pi-Hole compatible Linux Operating System such as [Ubuntu 20.04 in the cloud](./GOOGLE-CLOUD.md), or locally in your home/office.
+
+- port 51515 is forwarded to your server in your router. If you are using the Google Cloud Firewall:
+
+  - Log into https://console.google.com/cloud Click the Hamburger Menu at the top left, click **VPC Network** and click **Firewall Rules**. <br><img src="./images/screenshots/firewall.png" width="222"> <br>Click **Create Firewall Rule** at the top center of the page. The name of your rule should be `allow-wireguard`, change the **Targets** dropdown to **All instances in the network**. The **Source IP Ranges** should be `0.0.0.0/0`. The **udp** checkbox should be selected, and the port number next to it should be changed from `all` to `51515`. Then click the **Create** button.
+
+*Do not skip steps:*
 
 1. Connect via SSH to your Server, and become the root user (in the root home directory at **/root**) by executing this command:
 
