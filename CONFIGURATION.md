@@ -1,6 +1,6 @@
 # Software Installation & Configuration
 
-These instructions assume you have [completed a fresh installation of a Pi-Hole compatible Linux Operating System](./GOOGLE-CLOUD.md), such as Ubuntu 20.04. Do not skip steps:
+These instructions assume you have completed a fresh installation of a Pi-Hole compatible Linux Operating System such as [Ubuntu 20.04 in the cloud](./GOOGLE-CLOUD.md), or locally in your home/office. *Do not skip steps:*
 
 1. Connect via SSH to your Server, and become the root user (in the root home directory at **/root**) by executing this command:
 
