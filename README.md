@@ -72,7 +72,9 @@ This simple 2 step process will get you up and running:
 
 - **STEP 2** [Software Installation & Configuration](./CONFIGURATION.md)
 
-The technical merits of major choices in this guide are outlined in [REASONS.md](./REASONS.md).
+There is no value in setting up DNS over HTTPS or DNS over TLS on a cloud hosted instance, because your DNS requests to the cloud are encrypted by Wireguard.
+
+The performance related technical merits of Option A are outlined in [REASONS.md](./REASONS.md).
 
 ---
 
@@ -82,7 +84,9 @@ The technical merits of major choices in this guide are outlined in [REASONS.md]
 
 - **STEP 2** [Software Installation & Configuration](./CONFIGURATION.md)
 
-- **STEP 3** Bridge your Local LAN with your Wireguard network:
+- **STEP 3** [Setup DNS over HTTPS](https://docs.pi-hole.net/guides/dns-over-https/)
+
+- **STEP 4** Bridge your Local LAN with your Wireguard network:
 
   - Open the Wireguard Application on your Client Device, and edit the VPN Profile.
 
