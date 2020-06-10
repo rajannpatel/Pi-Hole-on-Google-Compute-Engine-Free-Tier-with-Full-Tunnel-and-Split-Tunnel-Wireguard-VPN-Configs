@@ -84,7 +84,7 @@ The performance related technical merits of Option A are outlined in [REASONS.md
 
 - **STEP 2** [Software Installation & Configuration](./CONFIGURATION.md)
 
-- **STEP 3** [Setup DNS over HTTPS](https://docs.pi-hole.net/guides/dns-over-https/)
+- **STEP 3** [Enable DNS over HTTPS](https://docs.pi-hole.net/guides/dns-over-https/)
 
 - **STEP 4** Bridge your Local LAN with your Wireguard network:
 
