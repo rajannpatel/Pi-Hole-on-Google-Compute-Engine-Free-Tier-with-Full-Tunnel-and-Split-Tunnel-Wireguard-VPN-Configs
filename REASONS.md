@@ -75,6 +75,12 @@ The proof is in the pudding:
 modprobe wireguard # executes successfully
 ```
 
+You can verify the wireguard module is available:
+
+```
+find /lib/modules/$(uname -r) -type f -name 'wireguard.ko'
+```
+
 You can verify the wireguard module is loaded:
 
 ```
