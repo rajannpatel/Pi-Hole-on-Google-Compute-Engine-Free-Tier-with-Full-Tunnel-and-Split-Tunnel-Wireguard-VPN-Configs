@@ -8,7 +8,7 @@
         </tr>
         <tr>
             <td><b><a href="#compute-engine-virtual-machine-setup">Step 2</a></b></td>
-            <td>Compute Engine Virtual Machine Setup</td>
+            <td>Compute Engine Virtual Machine & Firewall Setup</td>
         </tr>
         <tr>
             <td><b><a href="#cloud-console-mobile-app">Step 3</a></b></td>
