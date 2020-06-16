@@ -1,4 +1,4 @@
-# Full Tunnel or Split Tunnel IPv6 + IPv4 Wireguard VPN connections to an ad blocking Pi-Hole server, from your Android, iOS, Linux, macOS, & Windows devices
+# Full Tunnel or Split Tunnel IPv6 + IPv4 Wireguard VPN connections to an ad blocking Pi-Hole server, from your Android, iOS, Chrome OS, Linux, macOS, & Windows devices
 
 <img src="./images/data-privacy-risk.svg" width="125" align="right">
 

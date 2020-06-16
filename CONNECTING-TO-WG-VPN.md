@@ -14,7 +14,7 @@ The output can be copy and pasted into a blank text file on your client device, 
 
 ---
 
-## Android
+## Android & Chrome OS
 
 Install the [official Wireguard Android App](https://play.google.com/store/apps/details?id=com.wireguard.android) and use a QR Code to import your VPN profile.
 
