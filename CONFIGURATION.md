@@ -18,7 +18,7 @@ These instructions assume
 sudo su -
 ```
 
-2. Download and execute the setup script. (This **setup.sh** script must always be run as the root user.)
+2. Download and apply execution privileges to the setup script, before running it. (This **setup.sh** script must always be run as the root user, from the root user's home directory.)
 
 ```bash
 curl -O https://raw.githubusercontent.com/rajannpatel/Pi-Hole-on-Google-Compute-Engine-Free-Tier-with-Full-Tunnel-and-Split-Tunnel-Wireguard-VPN-Configs/master/setup.sh
@@ -50,9 +50,9 @@ It will automatically increment the IP Addresses for each new client profile, co
 
 Pause and consider if you need this for mission critical Pi-hole Servers. If you are running multiple Pi-Holes for redundancy, and you choose to implement this, stagger the upgrade and reboot schedules. Be prepared to perform health-checks to ensure all services are operational. Blind upgrades are not gauranteed to be smooth.
 
-**Note:** The following steps assume you have `nano` installed. You can use any other editor (e.g `vim`) to do this.
+**Note:** The following steps assume you have **nano** installed. You can use any other editor (e.g **vim**) to do this.
 
-Create the script to check if a reboot is required or not, by checking for the presence of the `/var/run/reboot-required` file, by running:
+Create the script to check if a reboot is required or not, by checking for the presence of the **/var/run/reboot-required** file, by running:
 
 ```bash
 sudo nano /etc/cron.daily/zz-restart-if-required
