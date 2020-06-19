@@ -32,7 +32,7 @@ Both Full Tunnel (all traffic) and Split Tunnel (DNS traffic only) VPN connectio
 sudo su -
 curl -O https://raw.githubusercontent.com/rajannpatel/Pi-Hole-on-Google-Compute-Engine-Free-Tier-with-Full-Tunnel-and-Split-Tunnel-Wireguard-VPN-Configs/master/setup.sh
 chmod +x setup.sh
-./setup.sh 
+bash ./setup.sh 
 ```
 
 3.  Make sure your router or firewall is forwarding incoming UDP packets on Port 51515 to the Ubuntu 20.04 Server, that you ran the **setup.sh** script on.
