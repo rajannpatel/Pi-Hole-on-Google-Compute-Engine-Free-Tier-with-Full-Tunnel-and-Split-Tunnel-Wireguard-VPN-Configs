@@ -23,7 +23,7 @@ sudo su -
 ```bash
 curl -O https://raw.githubusercontent.com/rajannpatel/Pi-Hole-on-Google-Compute-Engine-Free-Tier-with-Full-Tunnel-and-Split-Tunnel-Wireguard-VPN-Configs/master/setup.sh
 chmod +x setup.sh
-./setup.sh 
+bash ./setup.sh 
 ```
 
 3. Accept the default values provided throughout the entire installation process, once it is running, the only key you need to press is `ENTER`.
@@ -35,7 +35,7 @@ chmod +x setup.sh
 5. To add additional Wireguard VPN Clients, run **setup.sh** again. You must run this script as the root user, from within the **/root** home directory. This can be accomplished by making sure you have performed *Step 1* before performing this step.
 
 ```bash
-./setup.sh
+bash ./setup.sh
 ```
 
 It will automatically increment the IP Addresses for each new client profile, continue accepting all the default values the script provides. The option to edit values is provided for advanced users with edge case requirements.
