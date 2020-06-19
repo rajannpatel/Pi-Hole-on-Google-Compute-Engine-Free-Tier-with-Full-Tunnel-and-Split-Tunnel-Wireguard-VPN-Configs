@@ -25,6 +25,8 @@ Install the [official Wireguard Android App](https://play.google.com/store/apps/
 
 ## Arch Linux
 
+**NOTE:** There are some nuances around IPv6 on Arch Linux being actively discussed in Issue #14
+
 Install an open source [Wireguard plugin for Network Manager](https://github.com/max-moser/network-manager-wireguard/).
 
 ### 1. Install Wireguard plugin
