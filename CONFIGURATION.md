@@ -42,6 +42,28 @@ It will automatically increment the IP Addresses for each new client profile, co
 
 6. [Configure the Wireguard VPN Client on your device](./CONNECTING-TO-WG-VPN.md). Once your device is connected via Wireguard, all your DNS requests will flow through Pi-Hole. Your device will be identified by its IPv6 address in Pi-Hole's admin interface, which will be accessible at both `http://[fd42:42:42::1]/admin` and `http://10.66.66.1/admin`. The default configuration (which is the recommended configuration) for all VPN profiles is Split Tunnel. If you wish to route all your traffic through the VPN (Full Tunnel), edit the **Allowed IPs** on your Client Profile on your device to read `0.0.0.0/0, ::/0`.
 
+## Configure automated Pi-Hole updates and scheduled reboots
+PiVPN enables automated security updates of your Pi-Hole, but it won't restart the VM if the update requires it. Restarting the VM would require SSH'ing into it and restarting it if required. To remove that step, let's use a daily cron job to check to see if a restart is required and restart the VM as necessary. Also, we want do check daily for updates on our Pi-Hole install. To do all of this we will make use of 2 scripts. One will check whether a reboot is required or not, by checking the existance of `/var/run/reboot-required` file. The other one will run the command to check for Pi-Hole updates and perform them if needed. Here's how to do all of this:
+
+**Note:** The following steps assume you have `nano` installed. You can use any other editor (e.g `vim`) to do this.
+
+  1. Run `sudo nano /etc/cron.daily/zz-restart-if-required` to create the first script.
+  2. Paste inside the following:
+  ```bash
+    #!/bin/sh
+    if [ -f /var/run/reboot-required ]; then
+      /sbin/shutdown -r now
+    fi
+  ```
+  3. Set the correct permissions: `sudo chmod 755 /etc/cron.daily/zz-restart-if-required`
+  4. Create the script to update PiHole: `sudo nano /etc/cron.daily/update-pi-hole`
+  5. Paste inside the following:
+  ```bash
+    #!/bin/sh
+    /usr/local/bin/pihole -up
+  ```
+  6. Set the correct permissions: `sudo chmod 755 /etc/cron.daily/update-pi-hole`
+
 ---
 
 ## Edge Case Requirements
