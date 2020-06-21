@@ -25,8 +25,10 @@ Install the [official Wireguard Android App](https://play.google.com/store/apps/
 
 To configure a persistent tunnel on Android, that reconnects after the device restarts, you have to edit the system-wide VPN settings:
 
-Pixel Phones: **Settings** > **Network & Internet** > **Advanced** > **VPN** > **⚙** (for Wireguard) and enable **Always-on VPN**
-Samsung Phones: **Settings** > **Connections** > **More Connection Settings** > **VPN** > **⚙** (for Wireguard) and enable **Always-on VPN**
+| Device | Steps to enable Always-on VPN Tunnel |
+| ------:| ------------------------------------:|
+| Pixel Phones | **Settings** > **Network & Internet** > **Advanced** > **VPN** > **⚙** (for Wireguard) and enable **Always-on VPN** |
+| Samsung Phones | **Settings** > **Connections** > **More Connection Settings** > **VPN** > **⚙** (for Wireguard) and enable **Always-on VPN** |
 
 ## Arch Linux
 
@@ -53,6 +55,12 @@ Install the [official Wireguard iOS App](https://itunes.apple.com/us/app/wiregua
 
 <a href="https://itunes.apple.com/us/app/wireguard/id1441195209?ls=1&mt=8" target="_blank">
 <img src="./images/logos/app-store.svg" alt="Get it on the App Store" height="60"></a>
+
+Steps to enable Always-on VPN Tunnel:
+
+  - Edit the Tunnel in the Wireguard App
+  - Click **Edit** on the top right
+  - Scroll down to **On-Demand Activation** and Enable **Cellular** and **Wi-Fi** toggles
 
 ## macOS
 
