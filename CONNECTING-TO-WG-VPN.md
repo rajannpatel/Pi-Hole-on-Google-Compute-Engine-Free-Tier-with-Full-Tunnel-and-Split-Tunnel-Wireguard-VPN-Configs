@@ -23,6 +23,11 @@ Install the [official Wireguard Android App](https://play.google.com/store/apps/
 <a href="https://play.google.com/store/apps/details?id=com.wireguard.android" target="_blank">
 <img src="./images/logos/google-play.svg" alt="Get it on Google Play" height="60"></a>
 
+To configure a persistent tunnel on Android, that reconnects after the device restarts, you have to edit the system-wide VPN settings:
+
+Pixel Phones: **Settings** > **Network & Internet** > **Advanced** > **VPN** > **⚙** (for Wireguard) and enable **Always-on VPN**
+Samsung Phones: **Settings** > **Connections** > **More Connection Settings** > **VPN** > **⚙** (for Wireguard) and enable **Always-on VPN**
+
 ## Arch Linux
 
 **NOTE:** There are some nuances around IPv6 on Arch Linux being actively discussed in Issue #14
