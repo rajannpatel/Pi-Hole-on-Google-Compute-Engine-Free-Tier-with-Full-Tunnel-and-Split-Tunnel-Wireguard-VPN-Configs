@@ -49,7 +49,7 @@ DNS = $CLIENT_DNS_1, $CLIENT_DNS_2
 PublicKey = $SERVER_PUB_KEY
 PresharedKey = $CLIENT_PRE_SHARED_KEY
 Endpoint = $ENDPOINT
-AllowedIPs = 10.66.66.1, fd42:42:42::1/128" >>"$HOME/$SERVER_WG_NIC-client-$WG_CLIENT_COUNT.conf"
+AllowedIPs = 10.66.66.1/32, fd42:42:42::1/128" >>"$HOME/$SERVER_WG_NIC-client-$WG_CLIENT_COUNT.conf"
 
 	# Add the client as a peer to the server
 	echo -e "\n[Peer]
