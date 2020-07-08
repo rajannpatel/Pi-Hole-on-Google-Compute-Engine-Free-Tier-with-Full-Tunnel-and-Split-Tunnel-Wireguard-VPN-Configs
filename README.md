@@ -129,7 +129,7 @@ Remove the client:
 sudo wg set wg0 peer txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys= remove
 ```
 
-Replace `txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys=` with the appropriate **peer:** value on your server.
+Replace `txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys=` in the command above with the appropriate **peer:** you wish to delete on your server.
 
 ## Contributions Welcome
 
