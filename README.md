@@ -102,6 +102,35 @@ The performance related technical merits of Option A are outlined in [REASONS.md
 
 To connect and use the VPN, you will need to install the Wireguard VPN software on your device or computer: Review some [common Wireguard VPN Client configuration steps](./CONNECTING-TO-WG-VPN.md)
 
+## Delete Clients from Server
+
+Print list of all clients on the server:
+
+```bash
+sudo wg show
+```
+
+Sample output may look like this:
+
+```
+peer: txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys=
+  preshared key: (hidden)
+  endpoint: 99.99.99.99:99999
+  allowed ips: 10.66.66.2/32, fd42:42:42::2/128
+  latest handshake: 4 days, 20 hours, 4 minutes, 20 seconds ago
+  transfer: 4.20 MiB received, 4.20 MiB sent
+```
+
+Make note of the unique string after the word **peer:** for the client you wish to delete. In the example above, it is `txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys=`.
+
+Remove the client:
+
+```bash
+sudo wg set wg0 peer txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys= remove
+```
+
+Replace `txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys=` with the appropriate **peer:** value on your server.
+
 ## Contributions Welcome
 
 If there is something that can be done better, or if this documentation can be improved in any way, please submit a Pull Request with your fixes or edits.
