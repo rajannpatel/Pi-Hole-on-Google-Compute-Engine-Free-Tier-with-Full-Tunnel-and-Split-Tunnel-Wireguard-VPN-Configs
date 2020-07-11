@@ -112,14 +112,14 @@ sudo wg show
 
 Sample output may look like this:
 
-```
-peer: txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys=
-  preshared key: (hidden)
-  endpoint: 99.99.99.99:99999
-  allowed ips: 10.66.66.2/32, fd42:42:42::2/128
-  latest handshake: 4 days, 20 hours, 4 minutes, 20 seconds ago
-  transfer: 4.20 MiB received, 4.20 MiB sent
-```
+> ```
+> peer: txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys=
+>   preshared key: (hidden)
+>   endpoint: 99.99.99.99:99999
+>   allowed ips: 10.66.66.2/32, fd42:42:42::2/128
+>   latest handshake: 4 days, 20 hours, 4 minutes, 20 seconds ago
+>   transfer: 4.20 MiB received, 4.20 MiB sent
+> ```
 
 Make note of the unique string after the word **peer:** for the client you wish to delete. In the example above, it is `txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys=`.
 
