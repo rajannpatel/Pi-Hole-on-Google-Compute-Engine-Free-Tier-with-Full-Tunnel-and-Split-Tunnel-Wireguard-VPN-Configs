@@ -42,6 +42,21 @@ Go to https://cloud.google.com and click **Console** at the top right if you hav
 
 # Compute Engine Virtual Machine Setup
 
+Be aware of the limitations of the **[Free Usage Tier](https://cloud.google.com/free/)**:
+
+- 1 vCPU + 3.75GB RAM f1-micro virtual machine instance per month in one of the following US regions:
+  - Oregon: `us-west1`
+  - Iowa: `us-central1`
+  - South Carolina: `us-east1`
+- up to 30 GB HDD
+- 5 GB of snapshots storage for backups of your server in the following regions:
+  - Oregon: `us-west1`
+  - Iowa: `us-central1`
+  - South Carolina: `us-east1`
+  - Taiwan: `asia-east1`
+  - Belgium: `europe-west1`
+- 1 GB network egress from North America to all region destinations (excluding China and Australia) per month.
+
 1. Create a Virtual Machine instance on Compute Engine: <br><img src="./images/screenshots/8.png" width="216">
 2. Customize the instance: <br><img src="./images/screenshots/8.png" width="216">
 3. Name your Virtual Machine **pi-hole**. <br>To qualify for the Free Tier, your Region selection should be any US region only (excluding Northern Virginia [us-east4]). I have used **us-east1** and the **us-east1-b** zone because it is closest to me. <br>Choose the **f1-micro** Machine Type in the dropdown. <br>You must **Change** the operating system to **Ubuntu** (Operating System dropdown menu), and choose **Ubuntu 20.04 LTS Minimal** (version dropdown menu). <br>Change the Boot Disk Size to be **30GB** if you plan on keeping your DNS lookup records for any reason, otherwise the default **10GB** disk allocation is adequate.
