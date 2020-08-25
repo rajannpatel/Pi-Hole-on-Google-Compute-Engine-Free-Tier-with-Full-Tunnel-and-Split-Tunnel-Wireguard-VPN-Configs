@@ -42,6 +42,10 @@ It will automatically increment the IP Addresses for each new client profile, co
 
 6. [Configure the Wireguard VPN Client on your device](./CONNECTING-TO-WG-VPN.md). Once your device is connected via Wireguard, all your DNS requests will flow through Pi-Hole. Your device will be identified by its IPv6 address in Pi-Hole's admin interface, which will be accessible at both `http://[fd42:42:42::1]/admin` and `http://10.66.66.1/admin`. The default configuration (which is the recommended configuration) for all VPN profiles is Split Tunnel. If you wish to route all your traffic through the VPN (Full Tunnel), edit the **Allowed IPs** on your Client Profile on your device to read `0.0.0.0/0, ::/0`.
 
+### NOTE: Google Cloud Free Tier limits for Google Compute Engine
+
+- You get 1 GB network egress from North America to all region destinations (excluding China and Australia) per month.
+
 ---
 
 ## Edge Case Requirements
