@@ -39,11 +39,17 @@ function addClient() {
 	CLIENT_PUB_KEY=$(echo "$CLIENT_PRIV_KEY" | wg pubkey)
 	CLIENT_PRE_SHARED_KEY=$(wg genpsk)
 
+	# Read MTU value
+	if [ -f "/sys/class/net/${SERVER_WG_NIC}/mtu" ]; then
+		CLIENT_MTU="MTU = $(cat /sys/class/net/${SERVER_WG_NIC}/mtu)"
+	fi
+
 	# Create client file and add the server as a peer
 	echo "[Interface]
 PrivateKey = $CLIENT_PRIV_KEY
 Address = $CLIENT_WG_IPV4/24, $CLIENT_WG_IPV6/64
 DNS = $CLIENT_DNS_1, $CLIENT_DNS_2
+${CLIENT_MTU}
 
 [Peer]
 PublicKey = $SERVER_PUB_KEY
