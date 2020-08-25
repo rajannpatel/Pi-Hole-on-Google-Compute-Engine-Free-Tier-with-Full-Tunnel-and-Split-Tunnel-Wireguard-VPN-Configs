@@ -50,9 +50,9 @@ bash ./setup.sh
         <tr>
             <td><b><a href="#option-a--set-up-a-pi-hole-ad-blocking-vpn-server-with-a-static-anycast-ip-on-google-clouds-always-free-usage-tier">Option A</a></b></td>
             <td>
-                Set up a Pi-Hole Ad Blocking VPN Server with a static Anycast IP on Google Cloud's Always Free Usage Tier<br>
+                Set up a Pi-Hole Ad Blocking VPN Server with a static Anycast IP on Google Cloud's Always Free Usage Tier.<br><br>
                 <b>Fastest</b>: beefier server specs, premium network connectivity with an anycast static IP<br>
-                <b>Cheapest</b>: $0 to run
+                <b>Cheapest</b>: $0 to run with Split Tunnel configuration
             </td>
         </tr>
         <tr>
