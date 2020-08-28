@@ -1,17 +1,15 @@
-### STEPS
-
 <table>
     <tbody>
         <tr>
-            <td><b><a href="#google-cloud-login-and-account-creation">Step 1</a></b></td>
+            <td><b><a href="#google-cloud-login-and-account-creation">i.</a></b></td>
             <td>Google Cloud Login and Account Creation</td>
         </tr>
         <tr>
-            <td><b><a href="#compute-engine-virtual-machine-setup">Step 2</a></b></td>
+            <td><b><a href="#compute-engine-virtual-machine-setup">ii.</a></b></td>
             <td>Compute Engine Virtual Machine & Firewall Setup</td>
         </tr>
         <tr>
-            <td><b><a href="#cloud-console-mobile-app">Step 3</a></b></td>
+            <td><b><a href="#cloud-console-mobile-app">iii.</a></b></td>
             <td>Cloud Console Mobile App</td>
         </tr>
     </tbody>
@@ -21,7 +19,7 @@
 
 <img src="./images/logos/cloud.svg" width="48" align="left">
 
-# Google Cloud Login and Account Creation
+# i. Google Cloud Login and Account Creation
 
 Go to https://cloud.google.com and click **Console** at the top right if you have previously used Google's Cloud Services, or click **Try Free** if it's your first time.
 
@@ -40,7 +38,7 @@ Go to https://cloud.google.com and click **Console** at the top right if you hav
 
 <img src="./images/logos/computeengine.svg" width="48" align="left">
 
-# Compute Engine Virtual Machine Setup
+# ii. Compute Engine Virtual Machine Setup
 
 Be aware of the limitations of the **[Free Usage Tier](https://cloud.google.com/free/)**:
 
@@ -96,7 +94,7 @@ Be aware of the limitations of the **[Free Usage Tier](https://cloud.google.com/
 
 <img src="./images/logos/cloudconsole.svg" width="48" align="left">
 
-# Cloud Console Mobile App
+# iii. Cloud Console Mobile App
 
 <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.cloudconsole" target="_blank">
 <img src="./images/logos/google-play.svg" alt="Get it on Google Play" height="60"></a>
