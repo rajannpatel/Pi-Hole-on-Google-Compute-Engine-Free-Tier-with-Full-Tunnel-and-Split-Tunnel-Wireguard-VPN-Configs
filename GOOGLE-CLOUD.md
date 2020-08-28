@@ -57,14 +57,40 @@ Be aware of the limitations of the **[Free Usage Tier](https://cloud.google.com/
   - Belgium: `europe-west1`
 - 1 GB network egress from North America to all region destinations (excluding China and Australia) per month.
 
-1. Create a Virtual Machine instance on Compute Engine: <br><img src="./images/screenshots/8.png" width="216">
-2. Customize the instance: <br><img src="./images/screenshots/8.png" width="216">
-3. Name your Virtual Machine **pi-hole**. <br>To qualify for the Free Tier, your Region selection should be any US region only (excluding Northern Virginia [us-east4]). I have used **us-east1** and the **us-east1-b** zone because it is closest to me. <br>Choose the **f1-micro** Machine Type in the dropdown. <br>You must **Change** the operating system to **Ubuntu** (Operating System dropdown menu), and choose **Ubuntu 20.04 LTS Minimal** (version dropdown menu). <br>Change the Boot Disk Size to be **30GB** if you plan on keeping your DNS lookup records for any reason, otherwise the default **10GB** disk allocation is adequate.
-<br><img src="./images/screenshots/9.png" width="232">
-4. Expand **Management, Security, disks, networking, sole tenancy** and click the **Networking** tab. Click the Pencil icon under **Network Interfaces**. <br><img src="./images/screenshots/10.png" width="238">
-5. The External IP Address should not be Ephemeral. Choose **Create IP Address** to Reserve a New Static IP Address <br><img src="./images/screenshots/13.png" width="230"> <br><img src="./images/screenshots/14.png" width="395">
-6. You can log into your Virtual Machine via SSH in a Browser by clicking the SSH button. Make note of your External IP (it will be different from the screenshot below).<br><img src="./images/screenshots/15.png" width="369">
-7. Click the Hamburger Menu at the top left, click **VPC Network** and click **Firewall Rules**. <br><img src="./images/screenshots/firewall.png" width="222"> <br>Click **Create Firewall Rule** at the top center of the page. The name of your rule should be `allow-wireguard`, change the **Targets** dropdown to **All instances in the network**. The **Source IP Ranges** should be `0.0.0.0/0`. The **udp** checkbox should be selected, and the port number next to it should be changed from `all` to `51515`. Then click the **Create** button. You can disable the `default-allow-rdp` rule which Google set up with a default action of Allow, but because our server does not run any service on Port 3389 it is harmless to leave this rule alone. Do not disable the **default-allow-ssh** firewall rule, or you will disable the browser-based SSH from within the Google Cloud Console.
+<ol>
+<li>Create a Virtual Machine instance on Compute Engine: <br><img src="./images/screenshots/8.png" width="433"></li>
+<li>Customize the instance:
+  <ul>
+    <li>Name: <b>pi-hole</b></li>
+    <li>Labels: <em>optional section</em></li>
+    <li>Region: <b>us-east1</b>, <b>us-west1</b>, or <b>us-central1</b>.
+    <li>Zone: <em>choose anything, default selection is fine</em></li>
+    <li>Machine configuration:
+    <ul>
+      <li>Machine family: <b>General-purpose</b></li>
+      <li>Series: <b>N1</b></li>
+      <li>Machine type: <b>n1-standard-1</b> (1 vCPU, 3.75 GB memory)</li>
+    </ul>
+    </li>
+    <li>Boot disk: click <b>Change</b></li>
+      <ul>
+        <li>Operating system: <b>Ubuntu</b></li>
+        <li>Version: <b>Ubuntu 20.04 LTS Minimal</b></li>
+        <li>Boot disk type: <b>30GB</b></li>
+      </ul>
+    </ul>
+    The final selections should appear as follows: <br><img src="./images/screenshots/9.png" width="466">
+  </li>
+  <li>Expand <b>Management, Security, disks, networking, sole tenancy</b>:
+    <ul>
+      <li>Click the <b>Networking</b> tab</li>
+      <li>Click the Pencil icon under <b>Network Interfaces</b><br><img src="./images/screenshots/10.png" width="476"></li>
+      <li>In the External IP Address section, change from <b>Ephemeral</b> to <b>Create IP Address</b> to reserve a new Static IP Address.<br>Click <b>Reserve</b> <br><img src="./images/screenshots/13.png" width="460"> <br><img src="./images/screenshots/14.png" width="790"></li>
+    </ul>
+  </li>
+<li>You can log into your Virtual Machine via SSH in a Browser by clicking the SSH button. Make note of your External IP (it will be different from the screenshot below).<br><img src="./images/screenshots/15.png" width="369"></li>
+<li>Click the Hamburger Menu at the top left, click <b>VPC Network</b> and click <b>Firewall Rules</b>. <br><img src="./images/screenshots/firewall.png" width="444"> <br>Click <b>Create Firewall Rule</b> at the top center of the page. The name of your rule should be <code>allow-wireguard</code>, change the <b>Targets</b> dropdown to <b>All instances in the network</b>. The <b>Source IP Ranges</b> should be <code>0.0.0.0/0</code>. The <b>udp</b> checkbox should be selected, and the port number next to it should be changed from <code>all</code> to <code>51515</code>. Then click the <b>Create</b> button. You can disable the <code>default-allow-rdp</code> rule which Google set up with a default action of Allow, but because our server does not run any service on Port 3389 it is harmless to leave this rule alone. Do not disable the <b>default-allow-ssh</b> firewall rule, or you will disable the browser-based SSH from within the Google Cloud Console.</li>
+</ol>
 
 ---
 
