@@ -106,7 +106,7 @@ Be aware of the limitations of the **[Free Usage Tier](https://cloud.google.com/
     <li>Click the <b>Create</b> button.</li>
   </ul>
 </li>
-<li>Optional: You can disable the <code>default-allow-rdp</code> rule which Google set up with a default action of Allow, but because our server does not run any service on Port 3389 it is harmless to leave this rule alone. Do not disable the <b>default-allow-ssh</b> firewall rule, or you will disable the browser-based SSH from within the Google Cloud Console.</li>
+<li>Optional: You can disable the <b>default-allow-rdp</b> rule which Google set up with a default action of Allow, but because our server does not run any service on Port 3389 it is harmless to leave this rule alone. Do <em>not</em> disable the <b>default-allow-ssh</b> firewall rule, or you will disable the browser-based SSH from within the Google Cloud Console.</li>
 </ol>
 
 ---
