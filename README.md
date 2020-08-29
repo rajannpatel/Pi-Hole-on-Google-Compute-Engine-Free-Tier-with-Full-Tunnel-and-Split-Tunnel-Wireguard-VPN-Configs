@@ -14,6 +14,8 @@ Both Full Tunnel (all traffic) and Split Tunnel (DNS traffic only) VPN connectio
 | full | +10% overhead for vpn | low | 100% encryption | yes
 | split | just kilobytes per day | very low | dns encryption only | yes
 
+While Pi-hole was originally authored to run on a Raspberry Pi, people have followed this guide to deploy securely hosted instances of Pi-hole with VPN only access on Google Cloud, AWS, Heroku, Azure, Linode, Digital Ocean, and on spare hardware at home.
+
 ---
 
 ## Quickstart
