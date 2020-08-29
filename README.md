@@ -20,7 +20,7 @@ While Pi-hole was originally authored to run on a Raspberry Pi, people have foll
 
 ## Quickstart
 
-1.  Install [Ubuntu 20.04](https://ubuntu.com/download/server) if you want to benefit from the Wireguard Module natively shipped in the Linux Kernel. Or install any other OS flavor compatible with Pi-Hole.
+1.  Install [Ubuntu 20.04](https://ubuntu.com/download/server) if you want to benefit from the Wireguard Module natively shipped in the Linux Kernel. Or install any other OS flavor compatible with Pi-Hole. **NOTE**: This guide has only been tested with Ubuntu 20.04 LTS.
 
 2.  Download and execute **setup.sh** from this repository to:
 
