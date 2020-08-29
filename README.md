@@ -14,13 +14,13 @@ Both Full Tunnel (all traffic) and Split Tunnel (DNS traffic only) VPN connectio
 | full | +10% overhead for vpn | low | 100% encryption | yes
 | split | just kilobytes per day | very low | dns encryption only | yes
 
-While Pi-hole was originally authored to run on a Raspberry Pi, people have followed this guide to deploy securely hosted instances of Pi-hole with VPN only access on Google Cloud, AWS, Heroku, Azure, Linode, Digital Ocean, and on spare hardware at home.
+While Pi-hole was originally authored to run on a Raspberry Pi, people have followed this guide to deploy securely hosted instances of Pi-hole with VPN only access on Google Cloud, AWS, Heroku, Azure, Linode, Digital Ocean, Oracle Cloud, and on spare hardware at home.
 
 ---
 
 ## Quickstart
 
-1.  Install [Ubuntu 20.04](https://ubuntu.com/download/server) if you want to benefit from the Wireguard Module natively shipped in the Linux Kernel. Or install any other OS flavor compatible with Pi-Hole. **NOTE**: This guide has only been tested with Ubuntu 20.04 LTS.
+1.  Install [Ubuntu 20.04](https://ubuntu.com/download/server) if you want to benefit from the Wireguard Module natively shipped in the Linux Kernel. Ubuntu 18.04, Debian, and other Linux distributions do not yet have Wireguard implemented in the kernel-space, as of August 29, 2020.
 
 2.  Download and execute **setup.sh** from this repository to:
 
