@@ -67,7 +67,7 @@ Be aware of the limitations of the **[Free Usage Tier](https://cloud.google.com/
     <ul>
       <li>Machine family: <b>General-purpose</b></li>
       <li>Series: <b>N1</b></li>
-      <li>Machine type: <b>n1-standard-1</b> (1 vCPU, 3.75 GB memory)</li>
+      <li>Machine type: <b>f1-micro</b></li>
     </ul>
     </li>
     <li>Boot disk: click <b>Change</b></li>
