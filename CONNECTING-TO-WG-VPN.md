@@ -29,6 +29,7 @@ To configure a persistent tunnel on Android, that reconnects after the device re
 | :------| :------------------------------------|
 | Pixel Phones | **Settings** > **Network & Internet** > **Advanced** > **VPN** > **⚙** (for Wireguard) <br>enable **Always-on VPN** |
 | Samsung Phones | **Settings** > **Connections** > **More Connection Settings** > **VPN** > **⚙** (for Wireguard) <br>enable **Always-on VPN** |
+| Huawei Phones | **Settings** > **More connections** > **VPN** > press and hold (on Wireguard) > **Edit** <br>enable **Always-on VPN** |
 
 ## Arch Linux
 
