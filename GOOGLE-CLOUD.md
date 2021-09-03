@@ -66,8 +66,8 @@ Be aware of the limitations of the **[Free Usage Tier](https://cloud.google.com/
     <li>Machine configuration:
     <ul>
       <li>Machine family: <b>General-purpose</b></li>
-      <li>Series: <b>N1</b></li>
-      <li>Machine type: <b>f1-micro</b></li>
+      <li>Series: <b>E2</b></li>
+      <li>Machine type: <b>e2-Micro</b></li>
     </ul>
     </li>
     <li>Boot disk: click <b>Change</b></li>
