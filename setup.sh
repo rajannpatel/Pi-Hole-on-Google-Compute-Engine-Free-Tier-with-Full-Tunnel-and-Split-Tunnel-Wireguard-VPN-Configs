@@ -79,6 +79,11 @@ if [ "$EUID" -ne 0 ]; then
 	exit 1
 fi
 
+if [ "$PWD" != "$HOME" ]; then
+        echo "You need to run this script from the root home directory $HOME"
+        exit 1
+fi
+
 if [ "$(systemd-detect-virt)" == "openvz" ]; then
 	echo "OpenVZ is not supported"
 	exit
