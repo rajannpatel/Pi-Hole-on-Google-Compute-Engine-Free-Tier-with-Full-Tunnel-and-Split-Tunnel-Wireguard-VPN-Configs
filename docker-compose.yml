@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  wg: 
+    image: linuxserver/wireguard
+    networks:
+      default:
+        ipv4_address: 10.33.0.2
+    ports: 
+      - 51515:51820/udp
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv4.conf.all.forwarding=1.
+    volumes:
+      - /lib/modules:/lib/modules
+      - ./conf/server.conf:/config/wg0.conf:ro
+
+  pihole:
+    image: pihole/pihole:latest
+    networks:
+      default:
+        ipv4_address: 10.33.0.3
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      - wg
+    volumes:
+      - './etc/pihole/:/etc/pihole/'
+      - './etc/dnsmasq.d/:/etc/dnsmasq.d/'
+      # run `touch ./var-log/pihole.log` first unless you like errors
+      # - './var-log/pihole.log:/var/log/pihole.log'
+    environment:
+      ServerIP: 10.33.0.3
+      WEBPASSWORD: password
+      PIHOLE_DNS_: 1.1.1.2;1.0.0.2;8.8.8.8
+    extra_hosts:
+      - 'pihole pihole.rafael.lan:10.33.0.3'
+    restart: always
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 10.33.0.0/24
