@@ -52,7 +52,7 @@ It will automatically increment the IP Addresses for each new client profile, co
 
 ### Configure automated Pi-Hole updates and scheduled reboots
 
-Pause and consider if you need this for mission critical Pi-hole Servers. If you are running multiple Pi-Holes for redundancy, and you choose to implement this, stagger the upgrade and reboot schedules. Be prepared to perform health-checks to ensure all services are operational. Blind upgrades are not gauranteed to be smooth.
+Pause and consider if you need this for mission critical Pi-hole Servers. If you are running multiple Pi-Holes for redundancy, and you choose to implement this, stagger the upgrade and reboot schedules. Be prepared to perform health-checks to ensure all services are operational. Blind upgrades are not guaranteed to be smooth.
 
 **Note:** The following steps assume you have **nano** installed. You can use any other editor (e.g **vim**) to do this.
 
