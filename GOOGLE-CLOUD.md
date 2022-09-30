@@ -42,7 +42,7 @@ Go to https://cloud.google.com and click **Console** at the top right if you hav
 
 Be aware of the limitations of the **[Free Usage Tier](https://cloud.google.com/free/)**:
 
-- 1 vCPU + 614MB RAM f1-micro virtual machine instance per month in one of the following US regions:
+- 1 vCPU + 614MB RAM e2-micro virtual machine instance per month in one of the following US regions:
   - Oregon: `us-west1`
   - Iowa: `us-central1`
   - South Carolina: `us-east1`
