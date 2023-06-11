@@ -276,8 +276,13 @@ if [[ $OS =~ (fedora|centos) ]] && [[ $WG_RUNNING -ne 0 ]]; then
 fi
 
 # install pihole if it has not been installed
-if ! type "pihole" > /dev/null; then
+if ! type "pihole" &> /dev/null; then
 	curl -sSL https://install.pi-hole.net | bash
+	ec=$?
+	if [ ${ec} -nq 0 ]; then
+		printf "\n\e[1mERROR \e[0m- Failed to install PiHole!\n"
+		exit ${ec}
+	fi
 fi
 
 # use client configurations to determine if this is the first run, and apply preferred initial configurations
