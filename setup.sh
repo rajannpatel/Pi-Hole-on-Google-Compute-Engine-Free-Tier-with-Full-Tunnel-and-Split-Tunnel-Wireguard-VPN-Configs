@@ -12,26 +12,29 @@ function addClient() {
 		ENDPOINT="$SERVER_PUB_IP:$SERVER_PORT"
 	fi
 
-	WG_CLIENT_COUNT=`expr $(ls -1q wg0-client* 2>/dev/null | wc -l) + 2`
+	WG_CLIENT_COUNT=1
+	if [ -n "$(find -type f -name "wg0-client*.conf")" ]; then
+		WG_CLIENT_COUNT=$(expr $(ls -1vq wg0-client* | tail -1 | sed 's/wg0-client-\([0-9]\+\).conf/\1/') + 1)
+	fi
 
     # instructions
 	printf "\n\n\n\n\n\n"
 	echo -e "\e[1mDO NOT CHANGE DEFAULT VALUES"
 	echo -e "\e[2mCLIENT CONFIGURATION"
-	echo -e "\e[0mPress Enter to Accept Defaults for Wireguard Client #$(expr $WG_CLIENT_COUNT - 1)"
+	echo -e "\e[0mPress Enter to Accept Defaults for Wireguard Client #${WG_CLIENT_COUNT}"
 	printf "\n\n"
 
-	CLIENT_WG_IPV4="10.66.66.$(echo $WG_CLIENT_COUNT)"
+	CLIENT_WG_IPV4="$(sed "s/\.[0-9]\+$/.$(expr $WG_CLIENT_COUNT + 1)/" <<< $SERVER_WG_IPV4)"
 	read -rp "Client's WireGuard IPv4 " -e -i "$CLIENT_WG_IPV4" CLIENT_WG_IPV4
 
-	CLIENT_WG_IPV6="fd42:42:42::$(echo $WG_CLIENT_COUNT)"
+	CLIENT_WG_IPV6="$(sed "s/::[0-9]\+$/::$(expr $WG_CLIENT_COUNT + 1)/" <<< $SERVER_WG_IPV6)"
 	read -rp "Client's WireGuard IPv6 " -e -i "$CLIENT_WG_IPV6" CLIENT_WG_IPV6
 
 	# Pi-Hole DNS by default
-	CLIENT_DNS_1="10.66.66.1"
+	CLIENT_DNS_1="$SERVER_WG_IPV4"
 	read -rp "First DNS resolver to use for the client: " -e -i "$CLIENT_DNS_1" CLIENT_DNS_1
 
-	CLIENT_DNS_2="fd42:42:42::1"
+	CLIENT_DNS_2="$SERVER_WG_IPV6"
 	read -rp "Second DNS resolver to use for the client: " -e -i "$CLIENT_DNS_2" CLIENT_DNS_2
 
 	# Generate key pair for the client
@@ -55,7 +58,7 @@ ${CLIENT_MTU}
 PublicKey = $SERVER_PUB_KEY
 PresharedKey = $CLIENT_PRE_SHARED_KEY
 Endpoint = $ENDPOINT
-AllowedIPs = 10.66.66.1/32, fd42:42:42::1/128" >>"$HOME/$SERVER_WG_NIC-client-$WG_CLIENT_COUNT.conf"
+AllowedIPs = $SERVER_WG_IPV4/32, $SERVER_WG_IPV6/128" >>"$HOME/$SERVER_WG_NIC-client-$WG_CLIENT_COUNT.conf"
 
 	# Add the client as a peer to the server
 	echo -e "\n[Peer]
