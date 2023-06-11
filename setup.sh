@@ -217,6 +217,10 @@ fi
 mkdir /etc/wireguard >/dev/null 2>&1
 
 chmod 600 -R /etc/wireguard/
+# On CentOS and Fedore wg-quick service won't find the config without execution rights on the folder
+if [[ $OS =~ (fedora|centos) ]]; then
+	chmod 700 /etc/wireguard
+fi
 
 SERVER_PRIV_KEY=$(wg genkey)
 SERVER_PUB_KEY=$(echo "$SERVER_PRIV_KEY" | wg pubkey)
@@ -279,7 +283,7 @@ fi
 if ! type "pihole" &> /dev/null; then
 	curl -sSL https://install.pi-hole.net | bash
 	ec=$?
-	if [ ${ec} -nq 0 ]; then
+	if [ $ec -ne 0 ]; then
 		printf "\n\e[1mERROR \e[0m- Failed to install PiHole!\n"
 		exit ${ec}
 	fi
