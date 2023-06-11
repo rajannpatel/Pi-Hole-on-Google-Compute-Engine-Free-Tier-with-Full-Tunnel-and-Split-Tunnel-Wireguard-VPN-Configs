@@ -145,7 +145,25 @@ printf "\n\n"
 
 # Detect public IPv4 address and pre-fill for the user
 # dig requires dnsutils to be installed, only the ubuntu condition has this dependency explicitly installed
-SERVER_PUB_IPV4=$(dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}')
+if type "dig" &> /dev/null; then
+	SERVER_PUB_IPV4=$(dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}')
+else
+	# Try to detect public IPv4 with third party services when dig is not available
+	declare -a ipServices='https://ipinfo.io/ip https://api.ipify.org/ https://ifconfig.me/ip'
+	for serv in ${ipServices[@]}; do
+		resp=$(curl -s -w "\n%{http_code}" "$serv")
+		ec=$?
+		resp_code=$(tail -1 <<< "$resp")
+		if [ ${ec} -eq 0 ] && [ $resp_code -eq 200 ]; then
+		    # Check response for valid IP address
+			SERVER_PUB_IPV4=$(grep -oE '[12]{0,1}[0-9]{0,2}\.[12]{0,1}[0-9]{0,2}\.[12]{0,1}[0-9]{0,2}\.[12]{0,1}[0-9]{0,2}' <<< "$resp")
+			if [ $? -eq 0 ]; then
+				break
+			fi
+		fi
+	done
+fi
+
 read -rp "IPv4 public address: " -e -i "$SERVER_PUB_IPV4" SERVER_PUB_IP
 
 # Detect public interface and pre-fill for the user
