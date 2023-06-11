@@ -12,26 +12,29 @@ function addClient() {
 		ENDPOINT="$SERVER_PUB_IP:$SERVER_PORT"
 	fi
 
-	WG_CLIENT_COUNT=`expr $(ls -1q wg0-client* 2>/dev/null | wc -l) + 2`
+	WG_CLIENT_COUNT=1
+	if [ -n "$(find -type f -name "wg0-client*.conf")" ]; then
+		WG_CLIENT_COUNT=$(expr $(ls -1vq wg0-client* | tail -1 | sed 's/wg0-client-\([0-9]\+\).conf/\1/') + 1)
+	fi
 
     # instructions
 	printf "\n\n\n\n\n\n"
 	echo -e "\e[1mDO NOT CHANGE DEFAULT VALUES"
 	echo -e "\e[2mCLIENT CONFIGURATION"
-	echo -e "\e[0mPress Enter to Accept Defaults for Wireguard Client #$(expr $WG_CLIENT_COUNT - 1)"
+	echo -e "\e[0mPress Enter to Accept Defaults for Wireguard Client #${WG_CLIENT_COUNT}"
 	printf "\n\n"
 
-	CLIENT_WG_IPV4="10.66.66.$(echo $WG_CLIENT_COUNT)"
+	CLIENT_WG_IPV4="$(sed "s/\.[0-9]\+$/.$(expr $WG_CLIENT_COUNT + 1)/" <<< $SERVER_WG_IPV4)"
 	read -rp "Client's WireGuard IPv4 " -e -i "$CLIENT_WG_IPV4" CLIENT_WG_IPV4
 
-	CLIENT_WG_IPV6="fd42:42:42::$(echo $WG_CLIENT_COUNT)"
+	CLIENT_WG_IPV6="$(sed "s/::[0-9]\+$/::$(expr $WG_CLIENT_COUNT + 1)/" <<< $SERVER_WG_IPV6)"
 	read -rp "Client's WireGuard IPv6 " -e -i "$CLIENT_WG_IPV6" CLIENT_WG_IPV6
 
 	# Pi-Hole DNS by default
-	CLIENT_DNS_1="10.66.66.1"
+	CLIENT_DNS_1="$SERVER_WG_IPV4"
 	read -rp "First DNS resolver to use for the client: " -e -i "$CLIENT_DNS_1" CLIENT_DNS_1
 
-	CLIENT_DNS_2="fd42:42:42::1"
+	CLIENT_DNS_2="$SERVER_WG_IPV6"
 	read -rp "Second DNS resolver to use for the client: " -e -i "$CLIENT_DNS_2" CLIENT_DNS_2
 
 	# Generate key pair for the client
@@ -55,7 +58,7 @@ ${CLIENT_MTU}
 PublicKey = $SERVER_PUB_KEY
 PresharedKey = $CLIENT_PRE_SHARED_KEY
 Endpoint = $ENDPOINT
-AllowedIPs = 10.66.66.1/32, fd42:42:42::1/128" >>"$HOME/$SERVER_WG_NIC-client-$WG_CLIENT_COUNT.conf"
+AllowedIPs = $SERVER_WG_IPV4/32, $SERVER_WG_IPV6/128" >>"$HOME/$SERVER_WG_NIC-client-$WG_CLIENT_COUNT.conf"
 
 	# Add the client as a peer to the server
 	echo -e "\n[Peer]
@@ -142,7 +145,25 @@ printf "\n\n"
 
 # Detect public IPv4 address and pre-fill for the user
 # dig requires dnsutils to be installed, only the ubuntu condition has this dependency explicitly installed
-SERVER_PUB_IPV4=$(dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}')
+if type "dig" &> /dev/null; then
+	SERVER_PUB_IPV4=$(dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}')
+else
+	# Try to detect public IPv4 with third party services when dig is not available
+	declare -a ipServices='https://ipinfo.io/ip https://api.ipify.org/ https://ifconfig.me/ip'
+	for serv in ${ipServices[@]}; do
+		resp=$(curl -s -w "\n%{http_code}" "$serv")
+		ec=$?
+		resp_code=$(tail -1 <<< "$resp")
+		if [ ${ec} -eq 0 ] && [ $resp_code -eq 200 ]; then
+		    # Check response for valid IP address
+			SERVER_PUB_IPV4=$(grep -oE '[12]{0,1}[0-9]{0,2}\.[12]{0,1}[0-9]{0,2}\.[12]{0,1}[0-9]{0,2}\.[12]{0,1}[0-9]{0,2}' <<< "$resp")
+			if [ $? -eq 0 ]; then
+				break
+			fi
+		fi
+	done
+fi
+
 read -rp "IPv4 public address: " -e -i "$SERVER_PUB_IPV4" SERVER_PUB_IP
 
 # Detect public interface and pre-fill for the user
@@ -196,6 +217,10 @@ fi
 mkdir /etc/wireguard >/dev/null 2>&1
 
 chmod 600 -R /etc/wireguard/
+# On CentOS and Fedore wg-quick service won't find the config without execution rights on the folder
+if [[ $OS =~ (fedora|centos) ]]; then
+	chmod 700 /etc/wireguard
+fi
 
 SERVER_PRIV_KEY=$(wg genkey)
 SERVER_PUB_KEY=$(echo "$SERVER_PRIV_KEY" | wg pubkey)
@@ -255,8 +280,13 @@ if [[ $OS =~ (fedora|centos) ]] && [[ $WG_RUNNING -ne 0 ]]; then
 fi
 
 # install pihole if it has not been installed
-if ! type "pihole" > /dev/null; then
+if ! type "pihole" &> /dev/null; then
 	curl -sSL https://install.pi-hole.net | bash
+	ec=$?
+	if [ $ec -ne 0 ]; then
+		printf "\n\e[1mERROR \e[0m- Failed to install PiHole!\n"
+		exit ${ec}
+	fi
 fi
 
 # use client configurations to determine if this is the first run, and apply preferred initial configurations
