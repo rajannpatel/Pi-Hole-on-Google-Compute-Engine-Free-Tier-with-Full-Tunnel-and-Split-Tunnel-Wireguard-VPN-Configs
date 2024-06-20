@@ -198,7 +198,7 @@ This guide assumes you are running the following commands in a Linux environment
     
 17. Repeat the following code if a reboot was necessary to continue observing the progress of the installation:
     
-       gcloud compute ssh adblocker --zone $ZONE --command "tail -f /var/log/cloud-init-output.log"
+        gcloud compute ssh adblocker --zone $ZONE --command "tail -f /var/log/cloud-init-output.log"
     
 18. Wait until the cloud-init process is complete. When it's complete, you’ll receive two lines similar to this:
     
