@@ -178,7 +178,7 @@ This guide assumes you are running the following commands in a Linux environment
     
 15. If you are a first time `gcloud` user, you’ll be prompted for a passphrase twice. This password can be left blank, press **Enter** twice to proceed:
     
-    ```bash
+    ```text
     WARNING: The private SSH key file for gcloud does not exist.
     WARNING: The public SSH key file for gcloud does not exist.
     WARNING: You do not have an SSH key for gcloud.
