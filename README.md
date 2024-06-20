@@ -212,7 +212,7 @@ This guide assumes you are running the following commands in a Linux environment
 
         wireguard
 
-21. Configure your Pi-hole, visit `http://pihole-external-ip/admin` - and replace `pihole-external-ip` with the IP address assigned to you by Google Cloud in Step 6, above.
+21. Connect to your adblocker virtual machine by with a newly created Wireguard tunnel, and configure your Pi-hole. visit `http://10.66.66.1/admin` from your device, once it connects to the Wireguard tunnel.
 
 ## Contributions Welcome
 
