@@ -4,23 +4,26 @@
 
 These factors determined the choices I made in writing this guide:
 
-1. Security & Privacy
-2. Cost
-3. Performance
+1. Security
+2. Privacy
+3. Cost
+4. Performance
 
-## Security & Privacy
+## Security
 
-Google Cloud is not targeted towards consumers. It is targeted towards businesses and developers/programmers. There are no real privacy concerns here, because this service is enterprise and government grade: customers of Google Cloud are typically in Education, Financial Services, Government, Healthcare & Life Sciences, Media and Entertainment, and Retail. In order to secure customers in these industries, Google Cloud abides by stringent compliance policies.
+Ubuntu has been built on a foundation of enterprise-grade, industry leading security practices. With a free Ubuntu Pro token, you can use all of Canonical's security products: expanded security maintenance, systems management, automatic kernel hotfixes, and more.
 
-You can see more about how Google Cloud handles security, transparency, privacy, and compliance here: https://cloud.google.com/security/
+## Privacy
 
-Running a VPN service on Google's Cloud is a vastly superior option over trusting an unknown 3rd party VPN provider with your data.
+Google Cloud is not targeted towards consumers, it is a service targeted towards businesses and engineers, but can be very valuable for consumers. As a consumer, there should be no hesitations about using the service due to privacy concerns. Google Cloud is enterprise and government grade: customers of Google Cloud are typically in Education, Financial Services, Government, Healthcare & Life Sciences, Media and Entertainment, and Retail. In order to secure customers in these industries, Google Cloud abides by stringent compliance policies, internationally.
+
+You can read more about how Google Cloud handles security, transparency, privacy, and compliance on their website: https://cloud.google.com/security/
+
+Running your own self-hosted VPN service on Google's Cloud is a vastly superior option to using any VPN-as-a-service provider that targets consumers.
 
 ## Cost
 
-You get a lot for nothing. A free server running on 1 shared vCPU with 0.6GB of RAM, a cloud based firewall, and a spiffy app and website to monitor everything is nothing very special. Many providers offer this.
-
-The real juicy stuff is in the network connectivity you get for no cost: a static **Anycast IPv4 address**.
+You get a lot for nothing. A free server running on 2 shared vCPU on 1 shared CPU core, with 1GB of RAM, and a cloud based firewall. Monitoring your Google Cloud footprint is simple with their Android and iOS apps, and the Google Cloud web portal at https://console.cloud.google.com.
 
 ## Performance
 
@@ -53,7 +56,7 @@ Choosing a DNS server with the lowest latency is the simplest way to address con
 
 #### Use Google Public DNS
 
-Google's Public DNS has the lowest latency to your Pi-Hole, because it resolves completely within Google's internal private Premium Tier network. A round trip ping to Google's Public DNS from within Google's Cloud is 0.16ms, whereas a provider such as Cloudflare with direct peering to Google's network has a ping of 16ms.
+Of all DNS providers, Google's Public DNS servers have the lowest latency to your adblocker virtual machine, because the network requests are resolved completely within Google's internal private Premium Tier network. A round trip ping to Google's Public DNS from within Google's Cloud is 0.16ms, whereas a provider such as Cloudflare with direct peering to Google's network has a ping of 16ms.
 
 <img src="./images/logos/faq-cpu.svg" height="36" align="left">
 
@@ -61,26 +64,10 @@ Google's Public DNS has the lowest latency to your Pi-Hole, because it resolves 
 
 #### Wireguard Module
 
-In a blog post announcing [Ubuntu 20.04's arrival](https://ubuntu.com/blog/ubuntu-20-04-lts-arrives) Canonical stated:
+This guide has favored Ubuntu for years, since Canonical's blog post announcing [Ubuntu 20.04's arrival](https://ubuntu.com/blog/ubuntu-20-04-lts-arrives):
 
 >  WireGuard is included in Ubuntu 20.04 LTS
 
-This has been met with confusion because Ubuntu 20.04 ships with Linux Kernel 5.4, and Wireguard is officially in Linux Kernel 5.6. Canonical backported the Wireguard kernel module into 5.4 for Ubuntu 20.04
+At the time, this was met with confusion because Ubuntu 20.04 shipped with Linux Kernel 5.4, and Wireguard was officially in Linux Kernel 5.6. Canonical backported the Wireguard kernel module into 5.4 for Ubuntu 20.04 LTS.
 
-The proof is in the pudding:
-
-```bash
-modprobe wireguard # executes successfully
-```
-
-You can verify the wireguard module is available:
-
-```
-find /lib/modules/$(uname -r) -type f -name 'wireguard.ko'
-```
-
-You can verify the wireguard module is loaded:
-
-```
-lsmod | grep wireguard
-```
+Four years later, Ubuntu is still the recommended platform to run this critical network resource.

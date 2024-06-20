@@ -1,4 +1,4 @@
-# Full Tunnel or Split Tunnel IPv6 + IPv4 Wireguard VPN connections to an ad blocking Pi-Hole server, from your Android, iOS, Chrome OS, Linux, macOS, & Windows devices
+# Pi-hole + Wireguard on Ubuntu 24.04 LTS with Google Cloud's free tier, via cloud-init
 
 <img src="./images/data-privacy-risk.svg" width="125" align="right">
 
@@ -7,131 +7,212 @@ The goal of this project is to enable you to safely and privately use the Intern
 Both Full Tunnel (all traffic) and Split Tunnel (DNS traffic only) VPN connections provide DNS based ad-blocking over an encrypted connection to the cloud. The differences are:
 
 - A Split Tunnel VPN allows you to interact with devices on your Local Network (such as a Chromecast or Roku).
-- A Full Tunnel VPN can help bypass misconfigured proxies on corporate WiFi networks, and protects you from Man-In-The-Middle SSL proxies.
+- A Full Tunnel VPN can help bypass misconfigured proxies on corporate WiFi networks, protects you from Man-In-The-Middle SSL proxies, and masks IP address based geolocation.
 
 | Tunnel Type | Data Usage | Server CPU Load | Security | Ad Blocking |
 | -- | -- | -- | -- | -- |
 | full | +10% overhead for vpn | low | 100% encryption | yes
 | split | just kilobytes per day | very low | dns encryption only | yes
 
-While Pi-hole was originally authored to run on a Raspberry Pi, people have followed this guide to deploy securely hosted instances of Pi-hole with VPN only access on Google Cloud, AWS, Heroku, Azure, Linode, Digital Ocean, Oracle Cloud, and on spare hardware at home.
-
 ---
 
-## Quickstart
+## Install and configure the gcloud CLI
 
-1.  Install [Ubuntu 20.04](https://ubuntu.com/download/server) if you want to benefit from the Wireguard Module natively shipped in the Linux Kernel. Ubuntu 18.04, Debian, and other Linux distributions do not yet have Wireguard implemented in the kernel-space, as of August 29, 2020.
+This guide assumes you are running the following commands in a Linux environment. Windows or macOS users can get an instant Linux virtual machine on their computer with [Multipass](https://multipass.run/install).
 
-2.  Download and execute **setup.sh** from this repository to:
+1.  Install the [gcloud CLI](https://cloud.google.com/sdk/docs/install)
 
-    1.  install the latest Wireguard packages
+        sudo snap install google-cloud-cli --classic
 
-    2.  install the latest Pi-Hole, and configure it to accept DNS requests from the Wireguard interface
+2.  Connect `gcloud` with your Google Cloud account
 
-    3.  display a QR Code for 1 Split Tunnel VPN Profile, so you can import the VPN Profile to your device without having to type anything
+        gcloud init
 
-```bash
-sudo su -
-curl -O https://raw.githubusercontent.com/rajannpatel/Pi-Hole-on-Google-Compute-Engine-Free-Tier-with-Full-Tunnel-and-Split-Tunnel-Wireguard-VPN-Configs/master/setup.sh
-chmod +x setup.sh
-bash ./setup.sh 
-```
+    1. Enter **Y** when prompted with *Would you like to log in (Y/n)?*
+    2. Visit the authentication link which starts with `https://accounts.google.com/`
+    3. Sign in with a Google account
+    4. Click **Allow** to grant access to the Google Cloud SDK
+    5. Click **Copy** to copy the verification code
+    6. Paste the verification code into the terminal window where the `gcloud init` process is running
 
-3.  Make sure your router or firewall is forwarding incoming UDP packets on Port 51515 to the Ubuntu 20.04 Server, that you ran the **setup.sh** script on.
+    If you complete the `gcloud init` process successfully, you will receive the following output:
 
-4.  Create another VPN Client Profile by running `./setup.sh` again, you can create 253 profiles without modifying the script.
+    ```bash
+    You are now logged in as [your@email.com].
+    Your current project is [None].  You can change this setting by running:
+    $ gcloud config set project PROJECT_ID
+    ```
 
-5.  [Enable Wireguard VPN Connections on your devices](./CONNECTING-TO-WG-VPN.md)
+## Provision resources and deploy
 
----
+1. List the projects that are in your account:
+    
+       gcloud projects list
+    
+    You’ll receive output similar to:
+    
+    ```bash
+    PROJECT_ID        NAME              PROJECT_NUMBER
+    project-id        project-name      12345678910
+    ```
+    
+2. Set your project ID to the `PROJECT_ID` environment variable. Replace `project-id` with your personal project ID from the previous output:
+    
+       PROJECT_ID=project-id
+    
+    This step isn’t required, but it’s recommended because the `PROJECT_ID` variable is used often.
+    
+3. Connect `gcloud` to this `PROJECT_ID`:
+    
+       gcloud config set project $PROJECT_ID
+    
+    This is where the adblocker virtual machine (VM) will be launched.
+    
+4. List the available cloud zones and cloud regions where VMs can be run:
+    
+       gcloud compute zones list
+    
+    You’ll receive output similar to:
+    
+    ```bash
+    NAME                       REGION                   STATUS  NEXT_MAINTENANCE  TURNDOWN_DATE
+    us-east1-b                 us-east1                 UP
+    ```
+    
+5. Only `us-west1`, `us-central1`, and `us-east` regions qualify for Google Cloud's free tier. Set the `ZONE` and `REGION` environment variables by replacing `us-east1-b` and `us-east1` in the example commands below, with your desired zone and region:
+    
+    ```bash
+    ZONE=us-east1-b
+    REGION=us-east1
+    ```
+    
+6. Reserve a static IP address and label it `pihole-external-ip`:
+    
+       gcloud compute addresses create pihole-external-ip --region=$REGION
+    
+7. List all the addresses you’ve created:
+    
+       gcloud compute addresses list
 
-## Server Setup Guide
+8. Use curl to download the cloud-init YAML.
 
-<table>
-    <tbody>
-        <tr>
-            <td><b><a href="#option-a--set-up-a-pi-hole-ad-blocking-vpn-server-with-a-static-anycast-ip-on-google-clouds-always-free-usage-tier">Option&nbsp;A</a></b></td>
-            <td>
-                Set up a Pi-Hole Ad Blocking VPN Server with a static Anycast IP on Google Cloud's Always Free Usage Tier.<br><br>
-                <b>Fastest</b>: beefier server specs, premium network connectivity with an anycast static IP<br>
-                <b>Cheapest</b>: $0 to run with Split Tunnel configuration
-            </td>
-        </tr>
-        <tr>
-            <td><b><a href="#option-b--set-up-a-pi-hole-ad-blocking-vpn-server-behind-your-router-at-home">Option&nbsp;B</a></b></td>
-            <td>Set up a Pi-Hole Ad Blocking VPN Server behind your router at home.</td>
-        </tr>
-    </tbody>
-</table>
+       sudo apt install -y curl
+       curl -s https://raw.githubusercontent.com/rajannpatel/Pi-Hole-on-Google-Compute-Engine-Free-Tier-with-Full-Tunnel-and-Split-Tunnel-Wireguard-VPN-Configs/master/cloud-init.yaml -o cloud-init.yaml
 
----
+9. Open the file in an editor to change configurations specified between lines 4 and 36. The default values that have been provided will work, but changing the value for **WEBPASSWORD** from `pAs5word` to another alphanumeric string is recommended. Setting **TOKEN** with an [Ubuntu Pro token](https://ubuntu.com/pro/dashboard) is strongly recommended, so [Livepatch](https://ubuntu.com/security/livepatch) can be enabled.
 
-### OPTION A <br> Set up a Pi-Hole Ad Blocking VPN Server with a static Anycast IP on Google Cloud's Always Free Usage Tier
+    ```markdown
+    # SET OUR VARIABLES
+    # =================
 
-<img src="./images/upfront-cost.svg" width="90" align="right">
+    # TIME TO REBOOT FOR SECURITY AND BUGFIX PATCHES IN XX:XX FORMAT
+    SECURITY_REBOOT_TIME = "03:00"
 
-You can run your own privacy-first ad blocking service within the **[Free Usage Tier](https://cloud.google.com/free/)** on Google Cloud. **Step 1 of this guide gets you set up with a Google Cloud account, and Step 2 walks you through setting up a full tunnel or split tunnel VPN connection on your Android & iOS devices, and computers.**
+    # TIME TO UPDATE AND UPGRADE PIHOLE IN XX:XX:XX FORMAT
+    PIHOLE_UPDATE_TIME = "05:00:00"
 
-This simple 2 step process will get you up and running:
+    # ALPHANUMERIC PIHOLE WEB ADMIN PASSWORD
+    {% set WEBPASSWORD = 'pAs5word' %}
 
-- **STEP 1** [Google Cloud Login, Account Creation, & Server Provisioning](./GOOGLE-CLOUD.md)
+    # UBUNTU PRO TOKEN FROM https://ubuntu.com/pro/dashboard
+    # leave blank when using Ubuntu Pro instances on Azure, AWS, or Google Cloud
+    {% set TOKEN = '' %}
 
-- **STEP 2** [Software Installation & Configuration](./CONFIGURATION.md)
+    # WIREGUARD CONFIGURATIONS
+    {% set SERVER_WG_NIC = 'wg0' %}
+    {% set SERVER_WG_IPV4 = '10.66.66.1' %}
+    {% set SERVER_WG_IPV6 = 'fd42:42:42::1' %}
+    {% set SERVER_PORT = '51515' %}
 
-There is no value in setting up DNS over HTTPS or DNS over TLS on a cloud hosted instance, because your DNS requests to the cloud are encrypted by Wireguard.
+    # TIMEZONE: as represented in /usr/share/zoneinfo. An empty string ('') will result in UTC time being used.
+    {% set TIMEZONE = 'America/New_York' %}
 
-The performance related technical merits of Option A are outlined in [REASONS.md](./REASONS.md).
+    # HOSTNAME: subdomain of FQDN (e.g. `server` for `server.yourdomain.com`)
+    {% set HOSTNAME = 'pihole' %}
 
----
+    # DOMAIN (e.g. `yourdomain.com`)
+    {% set DOMAIN = '' %}
 
-### OPTION B <br> Set up a Pi-Hole Ad Blocking VPN Server behind your router at home.
+    # =========================
+    # END OF SETTING VARIABLES
+    ```
 
-- **STEP 1** A new install of Ubuntu 20.04 (preferably not Raspbian or Debian, for lack of a Wireguard Linux Kernel Module), and have your Router forward all incoming UDP connections on Port 51515 to this device.
+10. Run the following command to launch an e2-micro virtual machine named "adblocker":
+    
+    ```bash
+    gcloud compute instances create adblocker \
+        --zone=$ZONE \
+        --machine-type=e2-micro \
+        --address=pihole-external-ip \
+        --tags=wireguard \
+        --boot-disk-size=10 \
+        --image-family=ubuntu-2404-lts-amd64 \
+        --image-project=ubuntu-os-cloud \
+        --metadata-from-file=user-data=cloud-init.yaml
+    ```
 
-- **STEP 2** [Software Installation & Configuration](./CONFIGURATION.md)
+11. List all VMs in this project:
 
-- **STEP 3** [Enable DNS over HTTPS](https://docs.pi-hole.net/guides/dns-over-https/)
+        gcloud compute instances list
 
-- **STEP 4** Bridge your Local LAN with your Wireguard network:
+    
+12. Allow your "adblocker" virtual machine to receive incoming UDP Wireguard VPN connections on Port 51515, as defined by SERVER_PORT in Step 9 above.
 
-  - Open the Wireguard Application on your Client Device, and edit the VPN Profile.
+    ```bash
+    gcloud compute firewall-rules create allow-udp-51515 \
+        --direction=INGRESS \
+        --action=ALLOW \
+        --target-tags=wireguard \
+        --source-ranges=0.0.0.0/0 \
+        --rules=udp:51515 \
+        --description="Allow UDP traffic on port 51515 for adblocker"
+    ```
 
-  - Change the **Allowed IPs** to include your LAN subnet. For example, if your router's IP address is `192.168.86.1`, and your Ubuntu 20.04 Wireguard server has an IP somewhere in the range of `192.168.86.2` to `192.168.86.255`, your subnet is `192.168.86.0/24`. If you add `192.168.86.0/24` to the comma separated list of **Allowed IPs** in the Client Configuration file, you will be able to ping any device with an IP address between `192.168.86.1` to `192.168.86.254` over your Wireguard connection.
+13. List all firewall rules in this project:
+    
+        gcloud compute firewall-rules list
+    
+14. Observe the progress of your installation by tailing the `cloud-init-output.log` file:
+    
+        gcloud compute ssh adblocker --zone $ZONE --command "tail -f /var/log/cloud-init-output.log"
+    
+15. If you are a first time `gcloud` user, you’ll be prompted for a passphrase twice. This password can be left blank, press **Enter** twice to proceed:
+    
+    ```bash
+    WARNING: The private SSH key file for gcloud does not exist.
+    WARNING: The public SSH key file for gcloud does not exist.
+    WARNING: You do not have an SSH key for gcloud.
+    WARNING: SSH keygen will be executed to generate a key.
+    Generating public/private rsa key pair.
+    Enter passphrase (empty for no passphrase):
+    Enter same passphrase again:
+    ```
+    
+16. A reboot may be required during the cloud-init process. If a reboot is required, you’ll receive the following output:
+    
+    ```bash
+    2023-08-20 17:30:04,721 - cc_package_update_upgrade_install.py[WARNING]: Rebooting after upgrade or install per /var/run/reboot-required
+    ```
+    
+    If the `IMAGE_FAMILY` specified earlier contained all the security patches, this reboot step may not occur.
+    
+17. Repeat the following code if a reboot was necessary to continue observing the progress of the installation:
+    
+       gcloud compute ssh adblocker --zone $ZONE --command "tail -f /var/log/cloud-init-output.log"
+    
+18. Wait until the cloud-init process is complete. When it's complete, you’ll receive two lines similar to this:
+    
+    ```bash
+    Cloud-init v. 24.1.3-0ubuntu3.3 finished at Thu, 20 Jun 2024 03:53:16 +0000. Datasource DataSourceGCELocal.  Up 666.00 seconds
+    ```
+    
+19. Press `CTRL + C` to terminate the tail process in your terminal window.
 
----
+20. Configure your Wireguard tunnels. SSH into the adblocker instance, and run the `wireguard` command, and press "1" to create a VPN tunnel for a new user.
 
-## Client Setup Guide
+        wireguard
 
-To connect and use the VPN, you will need to install the Wireguard VPN software on your device or computer: Review some [common Wireguard VPN Client configuration steps](./CONNECTING-TO-WG-VPN.md)
-
-## Delete Clients from Server
-
-Print list of all clients on the server:
-
-```bash
-sudo wg show
-```
-
-Sample output may look like this:
-
-> ```
-> peer: txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys=
->   preshared key: (hidden)
->   endpoint: 99.99.99.99:99999
->   allowed ips: 10.66.66.2/32, fd42:42:42::2/128
->   latest handshake: 4 days, 20 hours, 4 minutes, 20 seconds ago
->   transfer: 4.20 MiB received, 4.20 MiB sent
-> ```
-
-Make note of the unique string after the word **peer:** for the client you wish to delete. In the example above, it is `txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys=`.
-
-Remove the client:
-
-```bash
-sudo wg set wg0 peer txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys= remove
-```
-
-Replace `txUZ0iqCyu69qQFq08U420hOp3/A4lYtrHVrJrAYBys=` in the command above with the appropriate **peer:** you wish to delete on your server.
+21. Configure your Pi-hole, visit `http://pihole-external-ip/admin` - and replace `pihole-external-ip` with the IP address assigned to you by Google Cloud in Step 6, above.
 
 ## Contributions Welcome
 

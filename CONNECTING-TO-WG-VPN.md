@@ -1,16 +1,16 @@
 # Common Wireguard VPN Client Configuration Steps
 
-At the end of the [Quickstart](./README.md#quickstart) or [Server Setup Guide](./README.md#server-setup-guide), a Wireguard configuration file named **wg0-client-1.conf** should have been created. This allows a client to connect to the VPN. A visual representation of the **wg0-client-1.conf** configuration file also appears as a QR Code, and the VPN Profile can be scanned using the Android or iOS Wireguard apps.
+Running the `wireguard` command on your adblocker virtual machine will run the Wireguard configuration command line utility. A configuration file is generated, and a QR Code which can be consumed by the Wireguard mobile apps is also printed in the terminal. The VPN configuration can be scanned using the Android or iOS Wireguard apps, or copy and pasted from the generated .conf file, to your device.
 
-If you are setting up a Wireguard Client on a computer or server, obtain the contents of the **wg0-client-1.conf** file and copy it to the device you want to connect from.
+If you are setting up a Wireguard Client on a computer or server, obtain the contents of the **wg0-client-username.conf** file and copy it to the device you want to connect from.
 
-You can print the contents of the **wg0-client-1.conf** file in the command line interface of the Wireguard Server, by running this command:
+You can print the contents of the **wg0-client-username.conf** file in the command line interface of the Wireguard Server, by running this command:
 
 ```bash
-sudo cat /root/wg0-client-1.conf
+sudo cat /root/wg0-client-username.conf
 ```
 
-The output can be copy and pasted into a blank text file on your client device, and this configuration file should be saved on your client device as **wg0-client-1.conf**
+The output can be copy and pasted into a blank text file on your client device, and this configuration file should be saved on your client device as **wg0-client-username.conf**
 
 ---
 

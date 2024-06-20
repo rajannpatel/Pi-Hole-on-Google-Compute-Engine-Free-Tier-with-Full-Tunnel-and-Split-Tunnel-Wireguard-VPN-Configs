@@ -1,0 +1,201 @@
+## template: jinja
+#cloud-config
+
+# SET OUR VARIABLES
+# =================
+
+# TIME TO REBOOT FOR SECURITY AND BUGFIX PATCHES IN XX:XX FORMAT
+{% set SECURITY_REBOOT_TIME = "03:00" %}
+
+# TIME TO UPDATE AND UPGRADE PIHOLE IN XX:XX:XX FORMAT
+{% set PIHOLE_UPDATE_TIME = "05:00:00" %}
+
+# ALPHANUMERIC PIHOLE WEB ADMIN PASSWORD
+{% set WEBPASSWORD = 'pAs5word' %}
+
+# UBUNTU PRO TOKEN FROM https://ubuntu.com/pro/dashboard
+# leave blank when using Ubuntu Pro instances on Azure, AWS, or Google Cloud
+{% set TOKEN = '' %}
+
+# WIREGUARD CONFIGURATIONS
+{% set SERVER_WG_NIC = 'wg0' %}
+{% set SERVER_WG_IPV4 = '10.66.66.1' %}
+{% set SERVER_WG_IPV6 = 'fd42:42:42::1' %}
+{% set SERVER_PORT = '51515' %}
+
+# TIMEZONE: as represented in /usr/share/zoneinfo. An empty string ('') will result in UTC time being used.
+{% set TIMEZONE = 'America/New_York' %}
+
+# HOSTNAME: subdomain of FQDN (e.g. `server` for `server.yourdomain.com`)
+{% set HOSTNAME = 'pihole' %}
+
+# DOMAIN (e.g. `yourdomain.com`)
+{% set DOMAIN = '' %}
+
+# =========================
+# END OF SETTING VARIABLES
+
+write_files:
+  - path: /etc/systemd/system/pihole-update.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Update Pi-hole
+
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/local/bin/pihole updatePihole
+  - path: /etc/systemd/system/pihole-update.timer
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Update Pi-hole daily at {{ PIHOLE_UPDATE_TIME }}
+
+      [Timer]
+      OnCalendar=*-*-* {{ PIHOLE_UPDATE_TIME }}
+      Persistent=true
+
+      [Install]
+      WantedBy=timers.target
+  - path: /etc/apt/apt.conf.d/20auto-upgrades
+    permissions: '0644'
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Download-Upgradeable-Packages "1";
+      APT::Periodic::AutocleanInterval "7";
+      APT::Periodic::Unattended-Upgrade "1";
+  - path: /etc/pihole/setupVars.conf
+    content: |
+      WEBPASSWORD=
+      PIHOLE_INTERFACE=
+      IPV4_ADDRESS=
+      IPV6_ADDRESS=
+      QUERY_LOGGING=false
+      INSTALL_WEB=true
+      DNSMASQ_LISTENING=local
+      PIHOLE_DNS_1=8.8.8.8
+      PIHOLE_DNS_2=8.8.4.4
+      PIHOLE_DNS_3=
+      PIHOLE_DNS_4=
+      DNS_FQDN_REQUIRED=true
+      DNS_BOGUS_PRIV=true
+      DNSSEC=true
+      TEMPERATUREUNIT=C
+      WEBUIBOXEDLAYOUT=traditional
+      API_EXCLUDE_DOMAINS=
+      API_EXCLUDE_CLIENTS=
+      API_QUERY_LOG_SHOW=all
+      API_PRIVACY_MODE=false
+      INSTALL_WEB_SERVER=true
+      INSTALL_WEB_INTERFACE=true
+      LIGHTTPD_ENABLED=true
+      CACHE_SIZE=10000
+      BLOCKING_ENABLED=true
+  - path: /tmp/setupVars.sh
+    permissions: '0700'
+    content: |
+      #!/bin/bash
+      INTERFACE=$(ip -4 route ls | awk '$1=="default"{print $5}')
+      IPV4_ADDRESS=$(ip -4 addr show "$INTERFACE" | awk '/inet /{print $2}')
+      IPV6_ADDRESS=$(ip -6 addr show "$INTERFACE" | awk '/mngtmpaddr/{print $2}')
+      sed -i "s|^IPV4_ADDRESS=.*|IPV4_ADDRESS=$IPV4_ADDRESS|" /etc/pihole/setupVars.conf
+      sed -i "s|^IPV6_ADDRESS=.*|IPV6_ADDRESS=$IPV6_ADDRESS|" /etc/pihole/setupVars.conf
+  - path: /etc/sysctl.d/wg.conf
+    content: |
+      net.ipv4.ip_forward = 1
+      net.ipv6.conf.all.forwarding = 1
+  - path: /etc/wireguard/params
+    permissions: '0644'
+    content: |
+      SERVER_WG_NIC={{ SERVER_WG_NIC }}
+      SERVER_WG_IPV4={{ SERVER_WG_IPV4 }}
+      SERVER_WG_IPV6={{ SERVER_WG_IPV6 }}
+      SERVER_PORT={{ SERVER_PORT }}
+      CLIENT_DNS_1={{ SERVER_WG_IPV4 }}
+      CLIENT_DNS_2={{ SERVER_WG_IPV6 }}
+      ALLOWED_IPS={{ SERVER_WG_IPV4 }}/32,{{ SERVER_WG_IPV6 }}/128
+  - path: /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+    permissions: '0600'
+    content: |
+      [Interface]
+      Address = {{ SERVER_WG_IPV4 }}/24,{{ SERVER_WG_IPV6 }}/64
+      ListenPort = {{ SERVER_PORT }}
+
+# `apt update`
+package_update: true
+
+# `apt upgrade`
+package_upgrade: true
+
+# restart if necessary
+package_reboot_if_required: true
+
+# `apt install`
+packages:
+  - git
+  - wireguard
+  - resolvconf
+  - qrencode
+  - unattended-upgrades
+  - needrestart
+
+runcmd:
+{% if platform == 'oracle' %}
+  - iptables -F && netfilter-persistent save
+{% endif %}
+  - sed -i "s/^#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
+  - needrestart -r a
+  - sed -i 's|^//\s*Unattended-Upgrade::Remove-Unused-Kernel-Packages\s*".*";|Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";|' /etc/apt/apt.conf.d/50unattended-upgrades
+  - sed -i 's|^//\s*Unattended-Upgrade::Remove-New-Unused-Dependencies\s*".*";|Unattended-Upgrade::Remove-New-Unused-Dependencies "true";|' /etc/apt/apt.conf.d/50unattended-upgrades
+  - sed -i 's|^//\s*Unattended-Upgrade::Remove-Unused-Dependencies\s*".*";|Unattended-Upgrade::Remove-Unused-Dependencies "true";|' /etc/apt/apt.conf.d/50unattended-upgrades
+  - sed -i 's|^//\s*Unattended-Upgrade::Automatic-Reboot\s*".*";|Unattended-Upgrade::Automatic-Reboot "true";|' /etc/apt/apt.conf.d/50unattended-upgrades
+  - sed -i 's|^//\s*Unattended-Upgrade::Automatic-Reboot-WithUsers\s*".*";|Unattended-Upgrade::Automatic-Reboot-WithUsers "true";|' /etc/apt/apt.conf.d/50unattended-upgrades
+  - sed -i 's|^//\s*Unattended-Upgrade::Automatic-Reboot-Time\s*".*";|Unattended-Upgrade::Automatic-Reboot-Time "{{ SECURITY_REBOOT_TIME }}";|' /etc/apt/apt.conf.d/50unattended-upgrades
+  - echo "SERVER_PUB_NIC=$(ip -4 route ls | awk '$1=="default"{print $5}')" >> /etc/wireguard/params
+  - echo "SERVER_PUB_IP=$(wget -qO- http://checkip.amazonaws.com)" >> /etc/wireguard/params
+  - echo "SERVER_PRIV_KEY=$(wg genkey)" >> /etc/wireguard/params
+  - echo "SERVER_PUB_KEY=$(echo "$(grep -oP '^SERVER_PRIV_KEY=\K.*' /etc/wireguard/params)" | wg pubkey)" >> /etc/wireguard/params
+  - echo "PrivateKey = $(grep -oP '^SERVER_PRIV_KEY=\K.*' /etc/wireguard/params)" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - echo "PostUp = iptables -I INPUT -p udp --dport {{ SERVER_PORT }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - echo "PostUp = iptables -I FORWARD -i $(ip -4 route ls | awk '$1=="default"{print $5}') -o {{ SERVER_WG_NIC }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - echo "PostUp = iptables -I FORWARD -i {{ SERVER_WG_NIC }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - echo "PostUp = iptables -t nat -A POSTROUTING -o $(ip -4 route ls | awk '$1=="default"{print $5}') -j MASQUERADE" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - echo "PostUp = ip6tables -I FORWARD -i {{ SERVER_WG_NIC }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - echo "PostUp = ip6tables -t nat -A POSTROUTING -o $(ip -4 route ls | awk '$1=="default"{print $5}') -j MASQUERADE" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - echo "PostDown = iptables -D INPUT -p udp --dport {{ SERVER_PORT }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - echo "PostDown = iptables -D FORWARD -i $(ip -4 route ls | awk '$1=="default"{print $5}') -o {{ SERVER_WG_NIC }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - echo "PostDown = iptables -D FORWARD -i {{ SERVER_WG_NIC }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - echo "PostDown = iptables -t nat -D POSTROUTING -o $(ip -4 route ls | awk '$1=="default"{print $5}') -j MASQUERADE" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - echo "PostDown = ip6tables -D FORWARD -i {{ SERVER_WG_NIC }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - echo "PostDown = ip6tables -t nat -D POSTROUTING -o $(ip -4 route ls | awk '$1=="default"{print $5}') -j MASQUERADE" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - git clone --depth 1 https://github.com/angristan/wireguard-install.git /opt/wireguard
+  - chmod +x /opt/wireguard/wireguard-install.sh
+  - ln -s /opt/wireguard/wireguard-install.sh /usr/local/bin/wireguard
+  - sysctl --system
+  - systemctl start "wg-quick@{{ SERVER_WG_NIC }}"
+  - systemctl enable "wg-quick@{{ SERVER_WG_NIC }}"
+  - /tmp/setupVars.sh
+  - rm /tmp/setupVars.sh
+  - git clone --depth 1 https://github.com/pi-hole/pi-hole.git /tmp/Pi-hole
+  - bash /tmp/Pi-hole/automated\ install/basic-install.sh --unattended
+  - pihole -a -p {{ WEBPASSWORD }}
+  - systemctl daemon-reload
+  - systemctl enable pihole-update.timer
+  - systemctl start pihole-update.timer
+
+ubuntu_advantage:
+{% if TOKEN %}
+  token: {{ TOKEN }}
+{% endif %}
+  enable:
+    - livepatch
+
+{% if "/" in TIMEZONE %}
+timezone: {{ TIMEZONE }}
+{% endif %}
+
+# FQDN is determined programmatically from the HOSTNAME and DOMAIN values (e.g. `yourdomain.com` or `server.yourdomain.com`)
+{% set FQDN = HOSTNAME ~ ('.' if HOSTNAME else '') ~ DOMAIN %}
+hostname: {{ HOSTNAME }}
+fqdn: {{ FQDN }}
+prefer_fqdn_over_hostname: true
