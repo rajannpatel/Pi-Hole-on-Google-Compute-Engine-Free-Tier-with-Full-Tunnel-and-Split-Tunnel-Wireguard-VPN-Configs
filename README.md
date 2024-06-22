@@ -37,11 +37,11 @@ This guide assumes you are running the following commands in a Linux environment
 
     If you complete the `gcloud init` process successfully, you will receive the following output:
 
-    ```bash
-    You are now logged in as [your@email.com].
-    Your current project is [None].  You can change this setting by running:
-    $ gcloud config set project PROJECT_ID
-    ```
+    > ```text
+    > You are now logged in as [your@email.com].
+    > Your current project is [None].  You can change this setting by running:
+    > $ gcloud config set project PROJECT_ID
+    > ```
 
 ## Provision resources and deploy
 
@@ -51,10 +51,10 @@ This guide assumes you are running the following commands in a Linux environment
     
     You’ll receive output similar to:
     
-    ```bash
-    PROJECT_ID        NAME              PROJECT_NUMBER
-    project-id        project-name      12345678910
-    ```
+    > ```text
+    > PROJECT_ID        NAME              PROJECT_NUMBER
+    > project-id        project-name      12345678910
+    > ```
     
 2. Set your project ID to the `PROJECT_ID` environment variable. Replace `project-id` with your personal project ID from the previous output:
     
@@ -74,10 +74,10 @@ This guide assumes you are running the following commands in a Linux environment
     
     You’ll receive output similar to:
     
-    ```bash
-    NAME                       REGION                   STATUS  NEXT_MAINTENANCE  TURNDOWN_DATE
-    us-east1-b                 us-east1                 UP
-    ```
+    > ```text
+    > NAME                       REGION                   STATUS  NEXT_MAINTENANCE  TURNDOWN_DATE
+    > us-east1-b                 us-east1                 UP
+    > ```
     
 5. Only `us-west1`, `us-central1`, and `us-east` regions qualify for Google Cloud's free tier. Set the `ZONE` and `REGION` environment variables by replacing `us-east1-b` and `us-east1` in the example commands below, with your desired zone and region:
     
@@ -90,16 +90,12 @@ This guide assumes you are running the following commands in a Linux environment
     
        gcloud compute addresses create pihole-external-ip --region=$REGION
     
-7. List all the addresses you’ve created:
-    
-       gcloud compute addresses list
-
-8. Use curl to download the cloud-init YAML.
+7. Use curl to download the cloud-init YAML.
 
        sudo apt install -y curl
        curl -s https://raw.githubusercontent.com/rajannpatel/Pi-Hole-on-Google-Compute-Engine-Free-Tier-with-Full-Tunnel-and-Split-Tunnel-Wireguard-VPN-Configs/master/cloud-init.yaml -o cloud-init.yaml
 
-9. Open the file in an editor to change configurations specified between lines 4 and 36. The default values that have been provided will work, but changing the value for **WEBPASSWORD** from `pAs5word` to another alphanumeric string is recommended. Setting **TOKEN** with an [Ubuntu Pro token](https://ubuntu.com/pro/dashboard) is strongly recommended, so [Livepatch](https://ubuntu.com/security/livepatch) can be enabled.
+8. Open the file in an editor to change configurations specified between lines 4 and 36. The default values that have been provided will work, but changing the value for **WEBPASSWORD** from `pAs5word` to another alphanumeric string is recommended. Setting **TOKEN** with an [Ubuntu Pro token](https://ubuntu.com/pro/dashboard) is strongly recommended, so [Livepatch](https://ubuntu.com/security/livepatch) can be enabled.
 
     ```markdown
     # SET OUR VARIABLES
@@ -137,7 +133,7 @@ This guide assumes you are running the following commands in a Linux environment
     # END OF SETTING VARIABLES
     ```
 
-10. Run the following command to launch an e2-micro virtual machine named "adblocker":
+9. Run the following command to launch an e2-micro virtual machine named "adblocker":
     
     ```bash
     gcloud compute instances create adblocker \
@@ -151,12 +147,7 @@ This guide assumes you are running the following commands in a Linux environment
         --metadata-from-file=user-data=cloud-init.yaml
     ```
 
-11. List all VMs in this project:
-
-        gcloud compute instances list
-
-    
-12. Allow your "adblocker" virtual machine to receive incoming UDP Wireguard VPN connections on Port 51515, as defined by SERVER_PORT in Step 9 above.
+10. Allow your "adblocker" virtual machine to receive incoming UDP Wireguard VPN connections on Port 51515, as defined by SERVER_PORT in Step 8 above.
 
     ```bash
     gcloud compute firewall-rules create allow-udp-51515 \
@@ -168,51 +159,77 @@ This guide assumes you are running the following commands in a Linux environment
         --description="Allow UDP traffic on port 51515 for adblocker"
     ```
 
-13. List all firewall rules in this project:
-    
-        gcloud compute firewall-rules list
-    
-14. Observe the progress of your installation by tailing the `cloud-init-output.log` file:
+11. Observe the progress of your installation by tailing the `cloud-init-output.log` file:
     
         gcloud compute ssh adblocker --zone $ZONE --command "tail -f /var/log/cloud-init-output.log"
     
-15. If you are a first time `gcloud` user, you’ll be prompted for a passphrase twice. This password can be left blank, press **Enter** twice to proceed:
+12. If you are a first time `gcloud` user, you’ll be prompted for a passphrase twice. This password can be left blank, press **Enter** twice to proceed:
     
-    ```text
-    WARNING: The private SSH key file for gcloud does not exist.
-    WARNING: The public SSH key file for gcloud does not exist.
-    WARNING: You do not have an SSH key for gcloud.
-    WARNING: SSH keygen will be executed to generate a key.
-    Generating public/private rsa key pair.
-    Enter passphrase (empty for no passphrase):
-    Enter same passphrase again:
-    ```
+    > ```text
+    > WARNING: The private SSH key file for gcloud does not exist.
+    > WARNING: The public SSH key file for gcloud does not exist.
+    > WARNING: You do not have an SSH key for gcloud.
+    > WARNING: SSH keygen will be executed to generate a key.
+    > Generating public/private rsa key pair.
+    > Enter passphrase (empty for no passphrase):
+    > Enter same passphrase again:
+    > ```
     
-16. A reboot may be required during the cloud-init process. If a reboot is required, you’ll receive the following output:
+13. A reboot may be required during the cloud-init process. If a reboot is required, you’ll receive the following output:
     
-    ```bash
-    2023-08-20 17:30:04,721 - cc_package_update_upgrade_install.py[WARNING]: Rebooting after upgrade or install per /var/run/reboot-required
-    ```
+    > ```text
+    > 2023-08-20 17:30:04,721 - cc_package_update_upgrade_install.py[WARNING]: Rebooting after upgrade or install per /var/run/reboot-required
+    > ```
     
     If the `IMAGE_FAMILY` specified earlier contained all the security patches, this reboot step may not occur.
     
-17. Repeat the following code if a reboot was necessary to continue observing the progress of the installation:
+14. Repeat the following code if a reboot was necessary to continue observing the progress of the installation:
     
         gcloud compute ssh adblocker --zone $ZONE --command "tail -f /var/log/cloud-init-output.log"
     
-18. Wait until the cloud-init process is complete. When it's complete, you’ll receive two lines similar to this:
+15. Wait until the cloud-init process is complete. When it's complete, you’ll receive two lines similar to this:
     
-    ```bash
-    Cloud-init v. 24.1.3-0ubuntu3.3 finished at Thu, 20 Jun 2024 03:53:16 +0000. Datasource DataSourceGCELocal.  Up 666.00 seconds
-    ```
+    > ```text
+    > Cloud-init v. 24.1.3-0ubuntu3.3 finished at Thu, 20 Jun 2024 03:53:16 +0000. Datasource DataSourceGCELocal.  Up 666.00 seconds
+    > ```
     
-19. Press `CTRL + C` to terminate the tail process in your terminal window.
+16. Press `CTRL + C` to terminate the tail process in your terminal window.
 
-20. Configure your Wireguard tunnels. SSH into the adblocker instance, and run the `wireguard` command, and press "1" to create a VPN tunnel for a new user.
+17. Configure your Wireguard tunnels. SSH into the adblocker instance, run the `wireguard` command, and press "1" to create a VPN tunnel for a new user.
 
         wireguard
 
-21. Connect to your adblocker virtual machine by with a newly created Wireguard tunnel, and configure your Pi-hole. visit `http://10.66.66.1/admin` from your device, once it connects to the Wireguard tunnel.
+18. Connect to your adblocker virtual machine with a newly created Wireguard tunnel, and configure your Pi-hole. visit `http://10.66.66.1/admin` from your device, once it connects to the Wireguard tunnel.
+
+## How to delete everything, if you wish to start over
+
+**THE FOLLOWING STEPS WILL DELETE WHAT YOU HAVE CREATED, ABOVE**
+
+This is how to remove the `adblocker` VM, its static IP address, and its firewall rules.
+
+1. List all the addresses you’ve created:
+    
+        gcloud compute addresses list
+
+2. To delete the address named `pihole-external-ip` we created earlier:
+
+        gcloud compute addresses delete pihole-external-ip --region=$REGION
+
+3. List all VMs in this project:
+
+        gcloud compute instances list
+
+4. To delete the `adblocker` VM we created earlier:
+
+        gcloud compute instances delete INSTANCE_NAME --zone $ZONE
+
+5. List all firewall rules in this project:
+    
+        gcloud compute firewall-rules list
+
+6. To delete the `allow-udp-51515` firewall rules we created earlier:
+
+        gcloud compute firewall-rules delete allow-udp-51515
 
 ## Contributions Welcome
 
