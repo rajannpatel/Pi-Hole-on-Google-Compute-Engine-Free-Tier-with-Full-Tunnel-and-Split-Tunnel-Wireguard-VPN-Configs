@@ -6,7 +6,7 @@ The goal of this project is to enable you to safely and privately use the Intern
 
 Both Full Tunnel (all traffic) and Split Tunnel (DNS traffic only) VPN connections provide DNS based ad-blocking over an encrypted connection to the cloud. The differences are:
 
-- A Split Tunnel VPN allows you to interact with devices on your Local Network (such as a Chromecast or Roku).
+- A Split Tunnel VPN allows direct interaction with devices on your Local Network (such as a Chromecast or Roku), but blocks DNS based discovery of local devices.
 - A Full Tunnel VPN can help bypass misconfigured proxies on corporate WiFi networks, protects you from Man-In-The-Middle SSL proxies, and masks IP address based geolocation.
 
 | Tunnel Type | Data Usage | Server CPU Load | Security | Ad Blocking |
