@@ -145,29 +145,33 @@ runcmd:
 {% endif %}
   - sed -i "s/^#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
   - needrestart -r a
-  - sed -i 's|^//\s*Unattended-Upgrade::Remove-Unused-Kernel-Packages\s*".*";|Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";|' /etc/apt/apt.conf.d/50unattended-upgrades
-  - sed -i 's|^//\s*Unattended-Upgrade::Remove-New-Unused-Dependencies\s*".*";|Unattended-Upgrade::Remove-New-Unused-Dependencies "true";|' /etc/apt/apt.conf.d/50unattended-upgrades
-  - sed -i 's|^//\s*Unattended-Upgrade::Remove-Unused-Dependencies\s*".*";|Unattended-Upgrade::Remove-Unused-Dependencies "true";|' /etc/apt/apt.conf.d/50unattended-upgrades
+  - sed -i 's|^//\s*Unattended-Upgrade::Remove-\(Unused-Kernel-Packages\|New-Unused-Dependencies\|Unused-Dependencies\)\s*".*";|Unattended-Upgrade::Remove-\1 "true";|' /etc/apt/apt.conf.d/50unattended-upgrades
   - sed -i 's|^//\s*Unattended-Upgrade::Automatic-Reboot\s*".*";|Unattended-Upgrade::Automatic-Reboot "true";|' /etc/apt/apt.conf.d/50unattended-upgrades
   - sed -i 's|^//\s*Unattended-Upgrade::Automatic-Reboot-WithUsers\s*".*";|Unattended-Upgrade::Automatic-Reboot-WithUsers "true";|' /etc/apt/apt.conf.d/50unattended-upgrades
   - sed -i 's|^//\s*Unattended-Upgrade::Automatic-Reboot-Time\s*".*";|Unattended-Upgrade::Automatic-Reboot-Time "{{ SECURITY_REBOOT_TIME }}";|' /etc/apt/apt.conf.d/50unattended-upgrades
-  - echo "SERVER_PUB_NIC=$(ip -4 route ls | awk '$1=="default"{print $5}')" >> /etc/wireguard/params
-  - echo "SERVER_PUB_IP=$(wget -qO- http://checkip.amazonaws.com)" >> /etc/wireguard/params
-  - echo "SERVER_PRIV_KEY=$(wg genkey)" >> /etc/wireguard/params
+  - |
+    cat <<EOF >> /etc/wireguard/params
+    SERVER_PUB_NIC=$(ip -4 route ls | awk '$1=="default"{print $5}')
+    SERVER_PUB_IP=$(wget -qO- http://checkip.amazonaws.com)
+    SERVER_PRIV_KEY=$(wg genkey)
+    EOF
   - echo "SERVER_PUB_KEY=$(echo "$(grep -oP '^SERVER_PRIV_KEY=\K.*' /etc/wireguard/params)" | wg pubkey)" >> /etc/wireguard/params
-  - echo "PrivateKey = $(grep -oP '^SERVER_PRIV_KEY=\K.*' /etc/wireguard/params)" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
-  - echo "PostUp = iptables -I INPUT -p udp --dport {{ SERVER_PORT }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
-  - echo "PostUp = iptables -I FORWARD -i $(ip -4 route ls | awk '$1=="default"{print $5}') -o {{ SERVER_WG_NIC }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
-  - echo "PostUp = iptables -I FORWARD -i {{ SERVER_WG_NIC }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
-  - echo "PostUp = iptables -t nat -A POSTROUTING -o $(ip -4 route ls | awk '$1=="default"{print $5}') -j MASQUERADE" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
-  - echo "PostUp = ip6tables -I FORWARD -i {{ SERVER_WG_NIC }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
-  - echo "PostUp = ip6tables -t nat -A POSTROUTING -o $(ip -4 route ls | awk '$1=="default"{print $5}') -j MASQUERADE" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
-  - echo "PostDown = iptables -D INPUT -p udp --dport {{ SERVER_PORT }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
-  - echo "PostDown = iptables -D FORWARD -i $(ip -4 route ls | awk '$1=="default"{print $5}') -o {{ SERVER_WG_NIC }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
-  - echo "PostDown = iptables -D FORWARD -i {{ SERVER_WG_NIC }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
-  - echo "PostDown = iptables -t nat -D POSTROUTING -o $(ip -4 route ls | awk '$1=="default"{print $5}') -j MASQUERADE" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
-  - echo "PostDown = ip6tables -D FORWARD -i {{ SERVER_WG_NIC }} -j ACCEPT" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
-  - echo "PostDown = ip6tables -t nat -D POSTROUTING -o $(ip -4 route ls | awk '$1=="default"{print $5}') -j MASQUERADE" >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+  - |
+    cat <<EOF >> /etc/wireguard/{{ SERVER_WG_NIC }}.conf
+    PrivateKey = $(grep -oP '^SERVER_PRIV_KEY=\K.*' /etc/wireguard/params)
+    PostUp = iptables -I INPUT -p udp --dport {{ SERVER_PORT }} -j ACCEPT
+    PostUp = iptables -I FORWARD -i $(ip -4 route ls | awk '$1=="default"{print $5}') -o {{ SERVER_WG_NIC }} -j ACCEPT
+    PostUp = iptables -I FORWARD -i {{ SERVER_WG_NIC }} -j ACCEPT
+    PostUp = iptables -t nat -A POSTROUTING -o $(ip -4 route ls | awk '$1=="default"{print $5}') -j MASQUERADE
+    PostUp = ip6tables -I FORWARD -i {{ SERVER_WG_NIC }} -j ACCEPT
+    PostUp = ip6tables -t nat -A POSTROUTING -o $(ip -4 route ls | awk '$1=="default"{print $5}') -j MASQUERADE
+    PostDown = iptables -D INPUT -p udp --dport {{ SERVER_PORT }} -j ACCEPT
+    PostDown = iptables -D FORWARD -i $(ip -4 route ls | awk '$1=="default"{print $5}') -o {{ SERVER_WG_NIC }} -j ACCEPT
+    PostDown = iptables -D FORWARD -i {{ SERVER_WG_NIC }} -j ACCEPT
+    PostDown = iptables -t nat -D POSTROUTING -o $(ip -4 route ls | awk '$1=="default"{print $5}') -j MASQUERADE
+    PostDown = ip6tables -D FORWARD -i {{ SERVER_WG_NIC }} -j ACCEPT
+    PostDown = ip6tables -t nat -D POSTROUTING -o $(ip -4 route ls | awk '$1=="default"{print $5}') -j MASQUERADE
+    EOF
   - git clone --depth 1 https://github.com/angristan/wireguard-install.git /opt/wireguard
   - chmod +x /opt/wireguard/wireguard-install.sh
   - ln -s /opt/wireguard/wireguard-install.sh /usr/local/bin/wireguard
