@@ -195,7 +195,7 @@ This guide assumes you are running the following commands in a Linux environment
     
 16. Press `CTRL + C` to terminate the tail process in your terminal window.
 
-## Configure your Wireguard tunnels
+## Configure and test your Wireguard tunnels
 
 1. SSH into the adblocker instance, and run the `wireguard` command. Press `1` to create a VPN tunnel for a new user, and accept the default values for the wizard's prompts.
 
@@ -204,6 +204,10 @@ This guide assumes you are running the following commands in a Linux environment
 2. The generated **.conf** file will create a Split Tunnel VPN connection by default. This configuration will be reflected in the generated QR code, which can be scanned in the Wireguard mobile apps. The tunnel configuration can be edited from within the Wireguard mobile app, if you wish to have a full tunnel connection. Replace the contents of **Allowed IPs** with `0.0.0.0/0` to route all traffic through Google Cloud. If you edit the **.conf** file on the server, you will need to regenerate the QR code to reflect this configuration change. The command to regenerate the QR code is:
 
        qrencode -t ansiutf8 -l L <"~/wg0-client-name.conf"
+
+3. You can verify if your Full Tunnel VPN configuration is working by visting [http://checkip.amazonaws.com](http://checkip.amazonaws.com) from your device. If it shows the IP address of your Google Cloud virtual machine, then all traffic is routing through there.
+
+4. You can verify if your Pi-hole DNS settings are working visiting [dnsleaktest.com](https://dnsleaktest.com) and performing an Extended Test. It should only query DNS servers configured in your Pi-hole. It will use the closest Google DNS servers to your Google Cloud virtual machine, by default.
 
 ## Configure Pi-hole
 
