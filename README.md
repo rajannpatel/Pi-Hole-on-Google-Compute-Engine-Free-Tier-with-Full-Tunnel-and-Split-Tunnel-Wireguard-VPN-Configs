@@ -24,7 +24,7 @@ This guide assumes you are running the following commands in a Linux environment
 
         sudo snap install google-cloud-cli --classic
 
-2.  Connect `gcloud` with your Google Cloud account
+2.  Connect gcloud CLI with your Google Cloud account
 
         gcloud init
 
@@ -62,7 +62,7 @@ This guide assumes you are running the following commands in a Linux environment
     
     This step isn’t required, but it’s recommended because the `PROJECT_ID` variable is used often.
     
-3. Connect `gcloud` to this `PROJECT_ID`:
+3. Associate gcloud CLI to this `PROJECT_ID`:
     
        gcloud config set project $PROJECT_ID
     
@@ -159,11 +159,11 @@ This guide assumes you are running the following commands in a Linux environment
         --description="Allow UDP traffic on port 51515 for adblocker"
     ```
 
-11. Observe the progress of your installation by tailing the `cloud-init-output.log` file:
+11. Observe the progress of your installation by tailing the `/var/log/cloud-init-output.log` file on the virtual machine:
     
         gcloud compute ssh adblocker --zone $ZONE --command "tail -f /var/log/cloud-init-output.log"
     
-12. If you are a first time `gcloud` user, you’ll be prompted for a passphrase twice. This password can be left blank, press **Enter** twice to proceed:
+12. If you are a first time gcloud CLI user, you’ll be prompted for a passphrase twice. This password can be left blank, press **Enter** twice to proceed:
     
     > ```text
     > WARNING: The private SSH key file for gcloud does not exist.
@@ -195,41 +195,49 @@ This guide assumes you are running the following commands in a Linux environment
     
 16. Press `CTRL + C` to terminate the tail process in your terminal window.
 
-17. Configure your Wireguard tunnels. SSH into the adblocker instance, run the `wireguard` command, and press "1" to create a VPN tunnel for a new user.
+## Configure your Wireguard tunnels
 
-        wireguard
+1. SSH into the adblocker instance, and run the `wireguard` command. Press `1` to create a VPN tunnel for a new user, and accept the default values for the wizard's prompts.
 
-18. Connect to your adblocker virtual machine with a newly created Wireguard tunnel, and configure your Pi-hole. visit `http://10.66.66.1/admin` from your device, once it connects to the Wireguard tunnel.
+       sudo wireguard
+
+2. The generated **.conf** file will create a Split Tunnel VPN connection by default. This configuration will be reflected in the generated QR code, which can be scanned in the Wireguard mobile apps. The tunnel configuration can be edited from within the Wireguard mobile app, if you wish to have a full tunnel connection. Replace the contents of **Allowed IPs** with `0.0.0.0/0` to route all traffic through Google Cloud. If you edit the **.conf** file on the server, you will need to regenerate the QR code to reflect this configuration change. The command to regenerate the QR code is:
+
+       qrencode -t ansiutf8 -l L <"~/wg0-client-name.conf"
+
+## Configure Pi-hole
+
+1. Connect to your adblocker virtual machine with a newly created Wireguard tunnel. To configure your Pi-hole, visit `http://10.66.66.1/admin` from the VPN connected device.
 
 ## How to delete everything, if you wish to start over
 
 **THE FOLLOWING STEPS WILL DELETE WHAT YOU HAVE CREATED, ABOVE**
 
-This is how to remove the `adblocker` VM, its static IP address, and its firewall rules.
+This is how to remove the "adblocker" VM, its static IP address, and its firewall rules.
 
 1. List all the addresses you’ve created:
     
-        gcloud compute addresses list
+       gcloud compute addresses list
 
-2. To delete the address named `pihole-external-ip` we created earlier:
+2. To delete the address named "pihole-external-ip" we created earlier:
 
-        gcloud compute addresses delete pihole-external-ip --region=$REGION
+       gcloud compute addresses delete pihole-external-ip --region=$REGION
 
 3. List all VMs in this project:
 
-        gcloud compute instances list
+       gcloud compute instances list
 
-4. To delete the `adblocker` VM we created earlier:
+4. To delete the "adblocker" VM we created earlier:
 
-        gcloud compute instances delete INSTANCE_NAME --zone $ZONE
+       gcloud compute instances delete INSTANCE_NAME --zone $ZONE
 
 5. List all firewall rules in this project:
     
-        gcloud compute firewall-rules list
+       gcloud compute firewall-rules list
 
-6. To delete the `allow-udp-51515` firewall rules we created earlier:
+6. To delete the "allow-udp-51515" firewall rules we created earlier:
 
-        gcloud compute firewall-rules delete allow-udp-51515
+       gcloud compute firewall-rules delete allow-udp-51515
 
 ## Contributions Welcome
 
