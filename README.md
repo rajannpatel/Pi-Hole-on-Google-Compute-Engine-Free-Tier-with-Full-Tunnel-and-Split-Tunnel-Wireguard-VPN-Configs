@@ -2,7 +2,7 @@
 
 <img src="./images/data-privacy-risk.svg" width="125" align="right">
 
-The goal of this project is to enable you to safely and privately use the Internet on your phones, tablets, and computers with a self-run VPN Server in the cloud, or on your own hardware in your home. This software shields you from intrusive advertisements. It blocks your ISP, cell phone company, public WiFi hotspot provider, and apps/websites from gaining insight into your usage activity.
+The goal of this project is to enable you to safely and privately use the Internet on your phones, tablets, and computers with a self-run VPN Server on Google Cloud's free tier. This will cost $0 to use anywhere in the world, except for data egress fees when connecting to the VPN from China and Australia. This software shields you from intrusive advertisements in apps and websites on any connected device and computer. It blocks your ISP, cell phone company, public WiFi hotspot provider, and apps or websites from gaining insight into your usage activity.
 
 Both Full Tunnel (all traffic) and Split Tunnel (DNS traffic only) VPN connections provide DNS based ad-blocking over an encrypted connection to the cloud. The differences are:
 
@@ -56,7 +56,7 @@ This guide assumes you are running the following commands in a Linux environment
     > project-id        project-name      12345678910
     > ```
     
-2. Set your project ID to the `PROJECT_ID` environment variable. Replace `project-id` with your personal project ID from the previous output:
+2. Set your Project ID to the `PROJECT_ID` environment variable. Replace `project-id` with your personal Project ID from the previous output:
     
        PROJECT_ID=project-id
     
@@ -86,7 +86,7 @@ This guide assumes you are running the following commands in a Linux environment
     REGION=us-east1
     ```
     
-6. Reserve a static IP address and label it `pihole-external-ip`:
+6. Reserve a static IP address and label it "pihole-external-ip":
     
        gcloud compute addresses create pihole-external-ip --region=$REGION
     
@@ -95,7 +95,7 @@ This guide assumes you are running the following commands in a Linux environment
        sudo apt install -y curl
        curl -s https://raw.githubusercontent.com/rajannpatel/Pi-Hole-on-Google-Compute-Engine-Free-Tier-with-Full-Tunnel-and-Split-Tunnel-Wireguard-VPN-Configs/master/cloud-init.yaml -o cloud-init.yaml
 
-8. Open the file in an editor to change configurations specified between lines 4 and 36. The default values that have been provided will work, but changing the value for **WEBPASSWORD** from `pAs5word` to another alphanumeric string is recommended. Setting **TOKEN** with an [Ubuntu Pro token](https://ubuntu.com/pro/dashboard) is strongly recommended, so [Livepatch](https://ubuntu.com/security/livepatch) can be enabled.
+8. Open the file in an editor to change configurations specified between lines 4 and 36. The default values that have been provided will work, but changing the value for `WEBPASSWORD` from `pAs5word` to another alphanumeric string is recommended. Setting `TOKEN` with an [Ubuntu Pro token](https://ubuntu.com/pro/dashboard) is strongly recommended, and results in [Livepatch](https://ubuntu.com/security/livepatch) being successfully enabled.
 
     ```markdown
     # SET OUR VARIABLES
