@@ -137,7 +137,6 @@ packages:
   - resolvconf
   - qrencode
   - unattended-upgrades
-  - needrestart
 
 runcmd:
 {% if platform == 'oracle' %}
