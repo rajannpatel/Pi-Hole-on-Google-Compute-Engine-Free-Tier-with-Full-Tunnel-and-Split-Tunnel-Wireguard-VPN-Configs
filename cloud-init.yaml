@@ -35,6 +35,13 @@
 # =========================
 # END OF SETTING VARIABLES
 
+apt:
+  conf: |+
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Download-Upgradeable-Packages "1";
+      APT::Periodic::AutocleanInterval "7";
+      APT::Periodic::Unattended-Upgrade "1";
+      
 write_files:
   - path: /etc/systemd/system/pihole-update.service
     permissions: '0644'
@@ -57,13 +64,6 @@ write_files:
 
       [Install]
       WantedBy=timers.target
-  - path: /etc/apt/apt.conf.d/20auto-upgrades
-    permissions: '0644'
-    content: |
-      APT::Periodic::Update-Package-Lists "1";
-      APT::Periodic::Download-Upgradeable-Packages "1";
-      APT::Periodic::AutocleanInterval "7";
-      APT::Periodic::Unattended-Upgrade "1";
   - path: /etc/pihole/setupVars.conf
     content: |
       WEBPASSWORD=
@@ -189,12 +189,11 @@ runcmd:
   - systemctl enable pihole-update.timer
   - systemctl start pihole-update.timer
 
-ubuntu_advantage:
 {% if TOKEN %}
+ubuntu_pro:
+  enable: [livepatch, esm]
   token: {{ TOKEN }}
 {% endif %}
-  enable:
-    - livepatch
 
 {% if "/" in TIMEZONE %}
 timezone: {{ TIMEZONE }}
