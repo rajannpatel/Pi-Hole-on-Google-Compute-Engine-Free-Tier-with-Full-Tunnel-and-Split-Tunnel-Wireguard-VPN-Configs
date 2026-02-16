@@ -141,7 +141,7 @@ This guide assumes you are running the following commands in a Linux environment
         --machine-type=e2-micro \
         --address=pihole-external-ip \
         --tags=wireguard \
-        --boot-disk-size=10 \
+        --boot-disk-size=30 \
         --image-family=ubuntu-2404-lts-amd64 \
         --image-project=ubuntu-os-cloud \
         --metadata-from-file=user-data=cloud-init.yaml
